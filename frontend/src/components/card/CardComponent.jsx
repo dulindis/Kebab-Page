@@ -41,7 +41,7 @@ export default function CardComponent({ product }) {
       </CardContent>
       <CardActions>
         <Button size="small">Learn More...</Button>
-        <Button size="small">Add To Cart</Button>
+        <Button size="small" variant="contained">Buy me</Button>
       </CardActions>
 
       {/* 

@@ -19,7 +19,7 @@ export default function HomeScreen() {
             {data.products.map((product) => {
               if (product.category === "food") {
                 return (
-                  <Grid item xs={2} sm={4} md={4} key={product.slug}>
+                  <Grid item xs={12} sm={6} md={2}  key={product.slug}>
                     <CardComponent product={product} />
                   </Grid>
                 );
