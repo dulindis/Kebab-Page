@@ -1,11 +1,13 @@
-import { Button, CardActions, CardContent } from "@mui/material";
+import { Button, CardActions, CardContent, Rating } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
 import React from "react";
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import { FaPepperHot } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import RatingComponent from "../rating/Rating";
 
 export default function CardComponent({ product }) {
   return (
@@ -22,15 +24,19 @@ export default function CardComponent({ product }) {
         <Link to={`/product/${product.slug}`}>
           <Typography gutterBottom variant="h5" component="div">
             {product.name}
-          </Typography>{" "}
+          </Typography>
         </Link>
-
+        <Typography>
+          <RatingComponent rating={product.rating} numReviews={product.numReviews}/>
+        </Typography>
         <Typography variant="body2" color="text.secondary">
           {product.description}
         </Typography>
         <Typography>
-          {" "}
-          <FaPepperHot style={{ color: "#A80000" }} />
+        {product.flavour === "spicy" ? (
+          <WhatshotIcon style={{ color: "#A80000" }}/>
+                        ) : ''}
+          {/* <FaPepperHot style={{ color: "#A80000" }} /> */}
         </Typography>
         <Typography>
           <strong>
