@@ -5,9 +5,9 @@ import React from 'react'
 export default function Footer() {
   return (
     <BottomNavigation >
-        <Box>
+        {/* <Box> */}
         All rights reserved
-        </Box>
+        {/* </Box> */}
     </BottomNavigation>
 
   )
