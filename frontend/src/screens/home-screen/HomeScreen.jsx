@@ -3,8 +3,8 @@ import useApi from "../../utils/customHooks.js";
 import { CircularProgress, Grid } from "@mui/material";
 import CardComponent from "../../components/card/CardComponent.jsx";
 import ResponsiveGrid from "../../components/responsie-grid/ResponsiveGrid.js";
-import { MdError } from "react-icons/md";
 import { Helmet } from "react-helmet-async";
+import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
 
 function HomeScreen() {
   const { loading, error, data } = useApi("/api/products");
@@ -21,7 +21,7 @@ function HomeScreen() {
         {loading ? (
           <CircularProgress />
         ) : error ? (
-          <MdError />
+          <MessegeBox>{error}</MessegeBox>
         ) : (
           <ResponsiveGrid>
             {data.map((product) => {

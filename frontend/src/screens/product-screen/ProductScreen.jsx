@@ -18,6 +18,7 @@ import KebabDiningIcon from "@mui/icons-material/KebabDining";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DescriptionIcon from "@mui/icons-material/Description";
 import {Helmet} from 'react-helmet-async';
+import MessegeBox from "../../components/messege-box/MessegeBox";
 
 export default function ProductScreen() {
   const { slug } = useParams();
@@ -26,8 +27,8 @@ export default function ProductScreen() {
   return loading ? (
     <CircularProgress />
   ) : error ? (
-    <MdError />
-  ) : (
+    <MessegeBox>{error}</MessegeBox>
+    ) : (
     <Container>
       <Box
         display="flex"
