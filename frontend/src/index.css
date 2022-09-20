@@ -54,3 +54,7 @@ main {
   padding: 1rem;
 
 } */
+
+.rating { display:flex; align-items:center; 
+  color:#FAAF00
+}

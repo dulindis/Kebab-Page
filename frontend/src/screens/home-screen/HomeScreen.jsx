@@ -6,7 +6,7 @@ import ResponsiveGrid from "../../components/responsie-grid/ResponsiveGrid.js";
 import {MdError} from 'react-icons/md';
 
 function HomeScreen() {
-  const { loading, error, products } = useApi("/api/products");
+  const { loading, error, data } = useApi("/api/products");
 
   return (
     <div>
@@ -21,7 +21,7 @@ function HomeScreen() {
          :
         (
           <ResponsiveGrid>
-            {products.map((product) => {
+            {data.map((product) => {
               if (product.category === "food") {
                 return (
                   <Grid item xs={12} sm={6} md={2}  key={product.slug}>
