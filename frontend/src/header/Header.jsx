@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from 'react';
 import AppBar from "@mui/material/AppBar";
 import {
   Avatar,
@@ -19,6 +20,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { Link } from "react-router-dom";
+import { Store } from "../Store";
 
 const pages = [
   { name: "Dishes", path: "/dishes" },
@@ -70,8 +72,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
+  const { state } = useContext(Store);
+  const {cart} = state;
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElCart, setAnchorElCart] = React.useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -188,15 +194,22 @@ export default function Header() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
-                <Badge badgeContent={4} color="error">
-                  <ShoppingCartIcon
-                    alt="Cart"
-                    src="/static/images/avatar/2.jpg"
-                  />
-                </Badge>
-                {/* <ShoppingCartIcon alt="Cart" src="/static/images/avatar/2.jpg" /> */}
-              </IconButton>
+              <Link to="/cart">
+                <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
+                  {cart.cartItems.length > 0 && (
+                    <Badge
+                      badgeContent={`${cart.cartItems.length}`}
+                      color="error"
+                    >
+                      <ShoppingCartIcon
+                        alt="Cart"
+                        src="/static/images/avatar/2.jpg"
+                      />
+                    </Badge>
+                  )}
+                  {/* <ShoppingCartIcon alt="Cart" src="/static/images/avatar/2.jpg" /> */}
+                </IconButton>
+              </Link>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}

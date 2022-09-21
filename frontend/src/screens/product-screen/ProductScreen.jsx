@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import useApi from "../../utils/customHooks";
 import {
@@ -19,11 +19,17 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DescriptionIcon from "@mui/icons-material/Description";
 import {Helmet} from 'react-helmet-async';
 import MessegeBox from "../../components/messege-box/MessegeBox";
+import { Store } from "../../Store";
 
 export default function ProductScreen() {
   const { slug } = useParams();
   const { loading, error, data } = useApi(`/api/products/slug/${slug}`, slug);
 
+  const {state,dispatch:ctxDispatch} = useContext(Store);
+
+  const addToCartHandler = () => {
+    ctxDispatch({type:'CART_ADD_ITEM', payload:{...data, quantity:1}})
+  }
   return loading ? (
     <CircularProgress />
   ) : error ? (
@@ -84,7 +90,9 @@ export default function ProductScreen() {
           <ListItem disablePadding>
             <ListItemButton>
               {data.countInStock > 0 ? (
-                <Button variant="contained" color="success">
+                <Button 
+                onClick={addToCartHandler}
+                variant="contained" color="success">
                   Order now
                 </Button>
               ) : (

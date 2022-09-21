@@ -8,7 +8,7 @@ import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
 
 function HomeScreen() {
   const { loading, error, data } = useApi("/api/products");
-
+  console.log('data from home:', data)
   return (
     <div>
       <Helmet>
