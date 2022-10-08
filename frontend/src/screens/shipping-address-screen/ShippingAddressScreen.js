@@ -1,7 +1,9 @@
 import { Button, FormControl, Input, InputLabel, Paper } from "@mui/material";
+import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
+import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
 
 export default function ShippingAddressScreen() {
@@ -57,8 +59,14 @@ export default function ShippingAddressScreen() {
       <Helmet>
         <title>Shipping Details</title>
       </Helmet>
+        {/* <Box> */}
+        <CheckoutSteps step1 step2></CheckoutSteps>
+
+        {/* </Box> */}
       <h1>Shipping Address</h1>
+      
       <Paper>
+ 
         <form onSubmit={submitHandler}>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="fullName">Full Name</InputLabel>
