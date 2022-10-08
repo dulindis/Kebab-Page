@@ -1,5 +1,7 @@
 import React from "react";
-import { useContext } from 'react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import {
   Avatar,
@@ -21,6 +23,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { Link } from "react-router-dom";
 import { Store } from "../Store";
+import MenuList from '@mui/material/MenuList';
 
 const pages = [
   { name: "Dishes", path: "/dishes" },
@@ -30,7 +33,14 @@ const pages = [
   { name: "Contact", path: "/contact" },
   { name: "Cart", path: "/cart" },
 ];
-const settings = ["Cart"];
+// const settings = ["Cart"];
+// const anonymousSettings = [{ page: "Cart", path: "/cart" }];
+const settings = [
+  { page: "Cart", path: "/cart", public: true },
+  { page: "Order History", path: "/orderhistory", public: false },
+  { page: "User Profile", path: "/profile", public: false },
+  { page: "Sign Out", path: "/signout", public: false },
+];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -72,12 +82,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const { state } = useContext(Store);
-  const {cart} = state;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElCart, setAnchorElCart] = React.useState(null);
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -95,8 +104,15 @@ export default function Header() {
     setAnchorElCart(null);
   };
 
+  const signOutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress");
+  };
+
   return (
     <AppBar position="static" color="primary" enableColorOnDark>
+      <ToastContainer position="bottom-center" limit={1} />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <KebabDiningIcon
@@ -162,6 +178,7 @@ export default function Header() {
           <KebabDiningIcon
             sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
           />
+
           <Typography
             variant="h5"
             noWrap
@@ -192,24 +209,36 @@ export default function Header() {
             ))}
           </Box>
 
+
+          {/* woking one */}
+          <Typography>
+            {userInfo ? (
+              <div>
+                <h1>{userInfo.name}</h1>
+                <Link to="#signout" onClick={signOutHandler}>
+                  Sign out
+                </Link>
+              </div>
+            ) : (
+              <Link to="/signin">Sign in</Link>
+            )}
+          </Typography>
+
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <Link to="/cart">
-                <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
-                  {cart.cartItems.length > 0 && (
-                    <Badge
-                      badgeContent={`${cart.cartItems.length}`}
-                      color="error"
-                    >
-                      <ShoppingCartIcon
-                        alt="Cart"
-                        src="/static/images/avatar/2.jpg"
-                      />
-                    </Badge>
-                  )}
-                  {/* <ShoppingCartIcon alt="Cart" src="/static/images/avatar/2.jpg" /> */}
-                </IconButton>
-              </Link>
+              <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
+                {cart.cartItems.reduce((a, c) => a + c.quantity, 0) > 0 && (
+                  <Badge
+                    badgeContent={`${cart.cartItems.reduce(
+                      (a, c) => a + c.quantity,
+                      0
+                    )}`}
+                    color="error"
+                  >
+                    <ShoppingCartIcon alt="Cart" />
+                  </Badge>
+                )}
+              </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
@@ -227,15 +256,43 @@ export default function Header() {
               open={Boolean(anchorElCart)}
               onClose={handleCloseCartMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseCartMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map((setting) => {
+                if (userInfo) {
+                  return (
+                    <MenuItem key={setting} onClick={handleCloseCartMenu}>
+                      <Typography textAlign="center">
+                        <Link to={setting.path}>{setting.page}</Link>
+                      </Typography>
+                    </MenuItem>
+                  );
+                } else {
+                  if (setting.public) {
+                    return (
+                      <MenuItem key={setting} onClick={handleCloseCartMenu}>
+                        <Typography textAlign="center">
+                          <Link to={setting.path}>{setting.page}</Link>
+                        </Typography>
+                      </MenuItem>
+                    );
+                  }
+                }
+              })}
             </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
+}
+
+{
+  /* 
+if (userInfo) {return(
+                  <MenuItem key={setting.name} onClick={handleCloseCartMenu}>
+                    <Typography textAlign="center">
+                    
+                      <Link to={setting.path}>{setting.name}</Link>
+                    </Typography>
+                  </MenuItem>)
+                } */
 }

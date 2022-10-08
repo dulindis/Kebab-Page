@@ -17,7 +17,7 @@ const reducer = (state,action) => {
 };
 }
 
-function useApi(url, slug) {
+function useApi(url, slug,_id) {
   const [{ loading, error, data }, dispatch] = useReducer(logger(reducer), {
     loading: true,
     error: "",
@@ -45,7 +45,7 @@ function useApi(url, slug) {
       cancelRequest = true;
       console.log("i clean up");
     };
-  }, [slug]);
+  }, [slug,_id]);
 
   return { loading, error, data };
 }

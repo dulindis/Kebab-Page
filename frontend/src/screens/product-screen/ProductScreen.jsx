@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useApi from "../../utils/customHooks";
 import {
   Button,
@@ -17,24 +17,41 @@ import RatingComponent from "../../components/rating/Rating";
 import KebabDiningIcon from "@mui/icons-material/KebabDining";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DescriptionIcon from "@mui/icons-material/Description";
-import {Helmet} from 'react-helmet-async';
+import { Helmet } from "react-helmet-async";
 import MessegeBox from "../../components/messege-box/MessegeBox";
 import { Store } from "../../Store";
+import axios from "axios";
 
 export default function ProductScreen() {
+const navigate=useNavigate();
+
   const { slug } = useParams();
-  const { loading, error, data } = useApi(`/api/products/slug/${slug}`, slug);
+  const { loading, error, data} = useApi(`/api/products/slug/${slug}`, slug);
+  const product=data;
+  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { cart } = state;
 
-  const {state,dispatch:ctxDispatch} = useContext(Store);
+  const addToCartHandler = async () => {
+    const existItem = cart.cartItems.find((item) => item._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    if(data.countInStock<quantity) {
+      window.alert('Sorry. Product is out of stock.');
+      return
+    }
 
-  const addToCartHandler = () => {
-    ctxDispatch({type:'CART_ADD_ITEM', payload:{...data, quantity:1}})
-  }
+    ctxDispatch({
+      type: "CART_ADD_ITEM",
+      payload: { ...product,  quantity },
+    });
+    navigate('/cart')
+  };
+  
   return loading ? (
     <CircularProgress />
   ) : error ? (
     <MessegeBox>{error}</MessegeBox>
-    ) : (
+  ) : (
     <Container>
       <Box
         display="flex"
@@ -43,7 +60,7 @@ export default function ProductScreen() {
       >
         <Box>
           <figure className="product-image">
-            <img src={data.image} alt={data.name} />{" "}
+            <img src={product.image} alt={product.name} />{" "}
           </figure>
         </Box>
 
@@ -54,9 +71,9 @@ export default function ProductScreen() {
                 <KebabDiningIcon />
               </ListItemIcon>
               <Helmet>
-                <title>{data.name}</title>
+                <title>{product.name}</title>
               </Helmet>
-              <ListItemText primary={data.name} />
+              <ListItemText primary={product.name} />
             </ListItemButton>
           </ListItem>
 
@@ -65,15 +82,15 @@ export default function ProductScreen() {
               <ListItemIcon>
                 <AttachMoneyIcon />
               </ListItemIcon>
-              <ListItemText primary={`Price:${data.currency} ${data.price}`} />
+              <ListItemText primary={`Price:${product.currency} ${product.price}`} />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
             <ListItemButton>
               <RatingComponent
-                rating={data.rating}
-                numReviews={data.numReviews}
+                rating={product.rating}
+                numReviews={product.numReviews}
               />
             </ListItemButton>
           </ListItem>
@@ -83,16 +100,18 @@ export default function ProductScreen() {
               <ListItemIcon>
                 <DescriptionIcon />
               </ListItemIcon>
-              <ListItemText primary={data.description} />
+              <ListItemText primary={product.description} />
             </ListItemButton>
           </ListItem>
 
           <ListItem disablePadding>
             <ListItemButton>
-              {data.countInStock > 0 ? (
-                <Button 
-                onClick={addToCartHandler}
-                variant="contained" color="success">
+              {product.countInStock > 0 ? (
+                <Button
+                  onClick={addToCartHandler}
+                  variant="contained"
+                  color="success"
+                >
                   Order now
                 </Button>
               ) : (
