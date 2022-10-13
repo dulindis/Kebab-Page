@@ -1,8 +1,10 @@
+import Axios from "axios";
 import {
   Button,
   Card,
   CardActions,
   CardContent,
+  CircularProgress,
   Divider,
   List,
   ListItemButton,
@@ -10,17 +12,90 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import CardComponent from "../../components/card/CardComponent";
 import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
+import { getError } from "../../utils/utils";
+import { toast } from "react-toastify";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CREATE_REQUEST":
+      return { ...state, loading: true };
+    case "CREATE_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        // payload:action.payload
+      };
+    case "CREATE_FAIL":
+      return {
+        ...state,
+        loading: false,
+        // error:action.payload
+      };
+    default:
+      return state;
+  }
+};
 
 const PlaceOrderScreen = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+  const navigate = useNavigate();
 
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
+
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+
+  cart.itemsPrice = round2(
+    cart.cartItems.reduce((a, c) => c.quantity * c.price, 0)
+  );
+
+  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+  cart.taxPrice = round2(0.15 * cart.itemsPrice);
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+
+  const placeOrderHandler = async () => {
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
+      const { data } = await Axios.post(
+        "/api/orders",
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      ctxDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      localStorage.removeItem("cartItems");
+      navigate(`/order/${data.order._id}`);
+    } catch (error) {
+      dispatch({ type: "CREATE_FAIL" });
+      toast.error(getError(error));
+    }
+  };
+
+  useEffect(() => {
+    if (!cart.paymentMethod) {
+      navigate("/payment");
+    }
+  }, [cart, navigate]);
   return (
     <div>
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -63,35 +138,69 @@ const PlaceOrderScreen = () => {
             <Link to="/payment">Edit</Link>
           </CardActions>
         </Card>
-
-        <Card>
         <Divider />
 
-         <List sx={{ flexGrow: 0, width:'500px' }}>
-         <li>
-            {cart.cartItems.map((item) => (
-              <ListItemButton component="a" href="#simple-list">
-                <ListItemText primary={item.name} />
+        <Card sx={{ flexGrow: 0, width: "500px" }}>
+          <List>
+            <li>
+              {cart.cartItems.map((item) => (
+                <ListItemButton component="a" href="#simple-list">
+                  <ListItemText primary={item.name} />
 
-                <figure className="product-image">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-thumbnail"
-                        />{" "}
-                      </figure>
+                  <figure className="product-image">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="img-thumbnail"
+                    />{" "}
+                  </figure>
 
+                  {/* <img src={item.image} alt={item.name}></img> */}
+                  <Link to={`/product/${item.slug}`}></Link>
+                  <ListItemText secondary={item.quantity} />
+                  <ListItemText secondary={`${item.price} ${item.currency}`} />
+                </ListItemButton>
+              ))}
+            </li>
+          </List>
+          <Link to="/cart">Edit</Link>
+        </Card>
 
-                {/* <img src={item.image} alt={item.name}></img> */}
-                <Link to={`/product/${item.slug}`}></Link>
-                <ListItemText secondary={item.quantity} />
-                <ListItemText secondary={`${item.price} ${item.currency}`} />
+        <Card>
+          <CardContent>
+            <Typography variant="h5" component="div">
+              Order Summary
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Items:</strong>
+              {cart.itemsPrice.toFixed(2)}
+            </Typography>
 
-              </ListItemButton>
-            ))}
-          </li>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Shipping Price:</strong>
+              {cart.shippingPrice.toFixed(2)}
+            </Typography>
 
-         </List>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Tax Price:</strong>
+              {cart.taxPrice.toFixed(2)}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Order Total:</strong>
+              {cart.totalPrice.toFixed(2)}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Button
+              type="button"
+              onClick={placeOrderHandler}
+              disabled={cart.cartItems.length === 0 || loading}
+            >
+              {" "}
+              Place Order
+            </Button>
+            {loading && <CircularProgress />}
+          </CardActions>
         </Card>
       </Box>
     </div>

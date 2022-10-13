@@ -16,27 +16,31 @@ import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
 
 export default function PaymentMethodScreen() {
-  const [paymentMethodName, setPaymentMethodName] = useState("");
-
-const navigate=useNavigate();
+  const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
-const {cart:{shippingAddress,paymentMethod}}=state;
-useEffect(()=>{
- if(!shippingAddress.address) {
-    navigate('/shipping')
- }
-},[shippingAddress.navigate])
+  const {
+    cart: { shippingAddress, paymentMethod },
+  } = state;
+  const [paymentMethodName, setPaymentMethodName] = useState(
+    paymentMethod || "Stripe"
+  );
+
+  useEffect(() => {
+    if (!shippingAddress.address) {
+      navigate("/shipping");
+    }
+  }, [shippingAddress.navigate]);
 
   console.log(paymentMethodName);
-//event:React.ChangeEvent<HTMLInputElement>
+  //event:React.ChangeEvent<HTMLInputElement>
   const handleChange = (event) => {
-    setPaymentMethodName(event.target.value)
-  }
+    setPaymentMethodName(event.target.value);
+  };
   const submitHandle = (e) => {
     e.preventDefault();
-    ctxDispatch({type:'SAVE_PAYMENT_METHOD', payload:paymentMethodName});
-    localStorage.setItem('paymentMehod', paymentMethodName);
-    navigate('/placeorder')
+    ctxDispatch({ type: "SAVE_PAYMENT_METHOD", payload: paymentMethodName });
+    localStorage.setItem("paymentMehod", paymentMethodName);
+    navigate("/placeorder");
   };
   return (
     <div>
@@ -55,24 +59,20 @@ useEffect(()=>{
             <RadioGroup
               name="payment-methods-group"
               aria-labelledby="payment-methods-group-label"
-              value={paymentMethod || 'PayPal'}
-            //   value={ paymentMethod  ? paymentMethodName : 'PayPal'}
-
-            //   defaultValue={'PayPal'}
+              defaultValue={paymentMethodName}
               onChange={handleChange}
             >
               <FormControlLabel
                 control={<Radio />}
                 label="PayPal"
                 value="PayPal"
-                checked={paymentMethodName==='PayPal'}
+                checked={paymentMethodName === "PayPal"}
               />
               <FormControlLabel
                 control={<Radio />}
                 label="Stripe"
                 value="Stripe"
-                checked={paymentMethodName==='Stripe'}
-
+                checked={paymentMethodName === "Stripe"}
               />
             </RadioGroup>
             <Button type="submit"> Continue</Button>
