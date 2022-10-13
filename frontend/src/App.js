@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/footer/Footer";
 import Header from "./header/Header";
 import CartScreen from "./screens/cart-screen/CartScreen";
+import CheckoutScreen from "./screens/checkout-screen/CheckoutScreen";
 import HomeScreen from "./screens/home-screen/HomeScreen";
 import OrderHistoryScreen from "./screens/order-history-screen/OrderHistoryScreen";
 import OrderScreen from "./screens/order-screen/OrderScreen";
@@ -26,6 +27,7 @@ function App() {
            <Route path="/signin" element={<SinginScreen />} />
            <Route path="/signup" element={<SingupScreen />} />
            <Route path="/profile" element={<ProfileScreen />} />
+           <Route path="/checkout" element={<CheckoutScreen />} />
 
            <Route path="/shipping" element={<ShippingAddressScreen />} />
            <Route path="/placeorder" element={<PlaceOrderScreen />} />

@@ -1,14 +1,16 @@
-import { Box } from '@mui/material'
-import React from 'react'
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import React from "react";
 
-export default function CheckoutSteps(props) {
+export default function CheckoutSteps({ steps, activeStep }) {
   return (
-    <div className='checkout-steps'>
-      <div className={props.step1 ? 'active' : ''}>Sign-In</div>
-      <div className={props.step2 ? 'active' : ''}>Shipping</div>
-      <div className={props.step3 ? 'active' : ''}>Payment</div>
-      <div className={props.step4 ? 'active' : ''}>Place Order</div>
-
-    </div>
-  )
+    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+      {steps.map((step) => (
+        <Step key={step}>
+          <StepLabel>{step}</StepLabel>
+        </Step>
+      ))}
+    </Stepper>
+  );
 }

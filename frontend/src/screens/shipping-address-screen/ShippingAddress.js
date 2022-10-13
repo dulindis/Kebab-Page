@@ -8,10 +8,9 @@ import { Box } from "@mui/system";
 import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
 
-export default function ShippingAddressScreen() {
+export default function ShippingAddress({activeStep,steps,handleNext}) {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -26,11 +25,11 @@ export default function ShippingAddressScreen() {
   );
   const [country, setCountry] = useState(shippingAddress.country || "");
 
-  useEffect(() => {
-    if (!userInfo) {
-      navigate("/signin?redirect=/shipping");
-    }
-  }, [userInfo, navigate]);
+  // useEffect(() => {
+  //   // if (!userInfo) {
+  //   //   navigate("/signin?redirect=/shipping");
+  //   // }
+  // }, [userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -54,7 +53,8 @@ export default function ShippingAddressScreen() {
         country,
       })
     );
-    navigate("/payment");
+    // navigate("/payment");
+    handleNext()
   };
 
   return (
@@ -62,12 +62,9 @@ export default function ShippingAddressScreen() {
       <Helmet>
         <title>Shipping Details</title>
       </Helmet>
-      {/* <Box> */}
-      {/* <CheckoutSteps step1 step2></CheckoutSteps> */}
 
-      {/* </Box> */}
       <Typography variant="h6" gutterBottom>
-        Shipping address
+        <h2>Shipping address</h2>
       </Typography>
       <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 3 }}>
         <Grid container spacing={3}>
@@ -80,6 +77,7 @@ export default function ShippingAddressScreen() {
               fullWidth
               autoComplete="shipping full-name"
               variant="standard"
+              defaultValue={fullName}
               onChange={(e) => setFullName(e.target.value)}
             />
           </Grid>
@@ -90,8 +88,11 @@ export default function ShippingAddressScreen() {
               name="address"
               label="Address"
               fullWidth
-              autoComplete="shipping address"
+              autoComplete={address || ""}
+              // "shipping address"
               variant="standard"
+              defaultValue={address}
+
               onChange={(e) => setAddress(e.target.value)}
             />
           </Grid>
@@ -105,6 +106,8 @@ export default function ShippingAddressScreen() {
               fullWidth
               autoComplete="shipping city"
               variant="standard"
+              defaultValue={city}
+
               onChange={(e) => setCity(e.target.value)}
             />
           </Grid>
@@ -118,6 +121,8 @@ export default function ShippingAddressScreen() {
               fullWidth
               autoComplete="shipping postal-code"
               variant="standard"
+              defaultValue={postalCode}
+
               onChange={(e) => setPostalCode(e.target.value)}
             />
           </Grid>
@@ -130,94 +135,32 @@ export default function ShippingAddressScreen() {
               fullWidth
               autoComplete="shipping country"
               variant="standard"
+              defaultValue={country}
+
               onChange={(e) => setCountry(e.target.value)}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-          <FormControlLabel>
+         <Grid item xs={12}>
+          {/* <FormControlLabel> */}
           <Button
               type="submit"
-              fullWidth
+              // fullWidth
               variant="contained"
               color="primary"
               // className={classes.submit}
+              
             >
-              Continue
+              {/* Continue */}
+              {activeStep === steps.length - 1 ? "Place order" : "Next"}
+
             </Button>
-          </FormControlLabel>
+          {/* </FormControlLabel> */}
            
-          </Grid> */}
+          </Grid> 
         </Grid>
       </Box>
 
-      {/* <form onSubmit={submitHandler}>
-         <FormControl margin="normal" required fullWidth>
-        
-          <InputLabel htmlFor="fullName">Full Name</InputLabel>
-          <Input
-            id="fullName"
-            name="fullName"
-            value={fullName}
-            autoComplete="fullName"
-            autoFocus
-            onChange={(e) => setFullName(e.target.value)}
-          />
-        </FormControl> 
-        <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="address">Address</InputLabel>
-          <Input
-            id="address"
-            name="address"
-            value={address}
-            autoComplete="address"
-            autoFocus
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </FormControl> 
-
-       <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="city">City</InputLabel>
-          <Input
-            id="city"
-            name="city"
-            value={city}
-            autoComplete="city"
-            autoFocus
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </FormControl>  
-     <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="postalCode">Postal Code</InputLabel>
-          <Input
-            id="postalCode"
-            name="postalCode"
-            value={postalCode}
-            autoComplete="postalCode"
-            autoFocus
-            onChange={(e) => setPostalCode(e.target.value)}
-          />
-        </FormControl> 
-       <FormControl margin="normal" required fullWidth>
-          <InputLabel htmlFor="country">Country</InputLabel>
-          <Input
-            id="country"
-            name="country"
-            value={country}
-            autoComplete="country"
-            autoFocus
-            onChange={(e) => setCountry(e.target.value)}
-          />
-        </FormControl> 
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          // className={classes.submit}
-        >
-          Continue
-        </Button>
-      </form> */}
+  
     </React.Fragment>
   );
 }
