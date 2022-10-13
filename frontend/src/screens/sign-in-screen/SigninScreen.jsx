@@ -1,65 +1,43 @@
-import React,{ useEffect }  from "react";
-// import { useEffect } from 'react-polyfill-hooks';
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Input from "@mui/material/Input";
-import Axios from "axios";
-import InputLabel from "@mui/material/InputLabel";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 import Typography from "@mui/material/Typography";
-// import withStyles from "@mui/material/styles/withStyles";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useContext } from "react";
 import { Store } from "../../Store.js";
-// import { userInfo } from "os";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
 import { getError } from "../../utils/utils.js";
-// const styles = (theme) => ({
-//   main: {
-//     width: "auto",
-//     display: "block", // Fix IE 11 issue.
-//     marginLeft: theme.spacing.unit * 3,
-//     marginRight: theme.spacing.unit * 3,
-//     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-//       width: 400,
-//       marginLeft: "auto",
-//       marginRight: "auto",
-//     },
-//   },
-//   paper: {
-//     marginTop: theme.spacing.unit * 8,
-//     display: "flex",
-//     flexDirection: "column",
-//     alignItems: "center",
-//     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${
-//       theme.spacing.unit * 3
-//     }px`,
-//   },
-//   avatar: {
-//     margin: theme.spacing.unit,
-//     backgroundColor: theme.palette.secondary.main,
-//   },
-//   form: {
-//     width: "100%", // Fix IE 11 issue.
-//     marginTop: theme.spacing.unit,
-//   },
-//   submit: {
-//     marginTop: theme.spacing.unit * 3,
-//   },
-// });
 
-function SigninScreen(props) {
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="#">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+const SigninScreen = () => {
   const navigate = useNavigate();
 
-  const { classes } = props;
   const { search } = useLocation();
   const redirectUrl = new URLSearchParams(search).get("redirect");
   const redirect = redirectUrl ? redirectUrl : "/";
@@ -67,17 +45,17 @@ function SigninScreen(props) {
   const [password, setPassword] = useState("");
   const { state, dispatch: ctxDispatch } = useContext(Store);
 
-    useEffect(() => {
-    if(state.userInfo){
-      navigate(redirect)
-    } 
-  }, [navigate,redirect,state.userInfo])
-  
+  useEffect(() => {
+    if (state.userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, state.userInfo]);
+  const theme = createTheme();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await Axios.post("/api/users/signin", {
+      const { data } = await axios.post("/api/users/signin", {
         email,
         password,
       });
@@ -86,87 +64,86 @@ function SigninScreen(props) {
       navigate(redirect || "/");
     } catch (err) {
       // alert('Invalid email or password')
-      toast.error(getError(err))
-
+      toast.error(getError(err));
     }
   };
 
-
   return (
-    <main
-    // className={classes.main}
-    >
-      <Helmet>
-        <title>Sign In</title>
-      </Helmet>
-      <h1>Sign In</h1>
-      <CssBaseline />
-      <Paper
-      //   className={classes.paper}
-      >
-        <Avatar
-        // className={classes.avatar}
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <Helmet>
+          <title>Sign In</title>
+        </Helmet>
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <LockOpenIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form
-          onSubmit={submitHandler}
-          // className={classes.form}
-        >
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={submitHandler}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="email"
+              label="Email Address"
               name="email"
               autoComplete="email"
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
             />
-          </FormControl>
-
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               name="password"
+              label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
             />
-          </FormControl>
 
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            // className={classes.submit}
-          >
-            Sign in
-          </Button>
-        </form>
-
-        <div>
-          New customer?{" "}
-          <Link to={`/signup?redirect=${redirect}`}>Create your account</Link>
-        </div>
-      </Paper>
-    </main>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container justifyContent="flex-end">
+              {/* <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid> */}
+              <Grid item>
+                <Link to={`/signup?redirect=${redirect}`}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
   );
-}
-
-SigninScreen.propTypes = {
-  classes: PropTypes.object.isRequired,
 };
 
 export default SigninScreen;
-
-// export default withStyles(styles)(SigninScreen);
