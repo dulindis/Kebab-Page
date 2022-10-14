@@ -1,4 +1,4 @@
-import Axios from "axios";
+import React, { useReducer } from "react";
 import {
   Button,
   Card,
@@ -6,21 +6,28 @@ import {
   CardContent,
   CircularProgress,
   Divider,
+  FormControl,
+  Input,
+  InputLabel,
   List,
+  ListItem,
   ListItemButton,
   ListItemText,
-  Typography,
+  Paper,
 } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { Box } from "@mui/system";
-import React, { useContext, useEffect, useReducer } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
-import CardComponent from "../../components/card/CardComponent";
-import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
-import { getError } from "../../utils/utils";
-import { toast } from "react-toastify";
 import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../../utils/utils";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -43,17 +50,14 @@ const reducer = (state, action) => {
   }
 };
 
-const PlaceOrderScreen = () => {
+export default function PlaceOrder({ activeStep, steps, handleNext }) {
+  const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  const navigate = useNavigate();
-
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
-
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => c.quantity * c.price, 0)
   );
@@ -97,55 +101,52 @@ const PlaceOrderScreen = () => {
       navigate("/payment");
     }
   }, [cart, navigate]);
+
   return (
-    <div>
-      {/* <CheckoutSteps step1 step2 step3 step4></CheckoutSteps> */}
+    <React.Fragment>
       <Helmet>
         <title>Preview Order</title>
       </Helmet>
-      <h1>Preview Order</h1>
-      <Box>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Shipping
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Name:</strong>
-              {cart.shippingAddress.fullName} <br />
-              <strong>Address:</strong>
-              {cart.shippingAddress.address},{cart.shippingAddress.city},
-              {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Link to="/shipping">Edit</Link>
-            {/* <Button size="small">Place Order</Button> */}
-          </CardActions>
-        </Card>
+      <Typography variant="h6" gutterBottom>
+        <h2>Preview Order</h2>
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h5" component="div">
+            Shipping
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Name:</strong>
+            {cart.shippingAddress.fullName} <br />
+            <strong>Address:</strong>
+            {cart.shippingAddress.address},{cart.shippingAddress.city},
+            {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+          </Typography>
+
+          <Link to="/shipping">Edit</Link>
+        </Grid>
+        <Divider />
+        <Grid item xs={12} sm={6}>
+          <Typography variant="h5" component="div">
+            Payment
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Method:</strong>
+            {cart.paymentMethod}
+          </Typography>
+          <Link to="/payment">Edit</Link>
+          {/* <Divider /> */}
+        </Grid>
         <Divider />
 
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Payment
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Method:</strong>
-              {cart.paymentMethod}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Link to="/payment">Edit</Link>
-          </CardActions>
-        </Card>
-        <Divider />
-
-        <Card sx={{ flexGrow: 0, width: "500px" }}>
+        <Grid item xs={12} sm={16}>
+        <Typography variant="h5" component="div">
+            Items:
+          </Typography>
           <List>
             <li>
               {cart.cartItems.map((item) => (
-                <ListItemButton component="a" href="#simple-list">
+                <ListItem divider={true} component="a" href="#simple-list">
                   <ListItemText primary={item.name} />
 
                   <figure className="product-image">
@@ -160,52 +161,47 @@ const PlaceOrderScreen = () => {
                   <Link to={`/product/${item.slug}`}></Link>
                   <ListItemText secondary={item.quantity} />
                   <ListItemText secondary={`${item.price} ${item.currency}`} />
-                </ListItemButton>
+                </ListItem>
               ))}
             </li>
           </List>
           <Link to="/cart">Edit</Link>
-        </Card>
+        </Grid>
+        <Divider />
 
-        <Card>
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Order Summary
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Items:</strong>
-              {cart.itemsPrice.toFixed(2)}
-            </Typography>
+        <Grid item xs={12} sm={16}>
+          <Typography variant="h5" component="div">
+            Order Summary
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Items:</strong>
+            {cart.itemsPrice.toFixed(2)}
+          </Typography>
 
-            <Typography variant="body2" color="text.secondary">
-              <strong>Shipping Price:</strong>
-              {cart.shippingPrice.toFixed(2)}
-            </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Shipping Price:</strong>
+            {cart.shippingPrice.toFixed(2)}
+          </Typography>
 
-            <Typography variant="body2" color="text.secondary">
-              <strong>Tax Price:</strong>
-              {cart.taxPrice.toFixed(2)}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Order Total:</strong>
-              {cart.totalPrice.toFixed(2)}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Button
-              type="button"
-              onClick={placeOrderHandler}
-              disabled={cart.cartItems.length === 0 || loading}
-            >
-              {" "}
-              Place Order
-            </Button>
-            {loading && <CircularProgress />}
-          </CardActions>
-        </Card>
-      </Box>
-    </div>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Tax Price:</strong>
+            {cart.taxPrice.toFixed(2)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            <strong>Order Total:</strong>
+            {cart.totalPrice.toFixed(2)}
+          </Typography>
+          <Button
+            type="button"
+            onClick={placeOrderHandler}
+            disabled={cart.cartItems.length === 0 || loading}
+          >
+            {" "}
+            Place Order
+          </Button>
+          {loading && <CircularProgress />}
+        </Grid>
+      </Grid>
+    </React.Fragment>
   );
-};
-
-export default PlaceOrderScreen;
+}

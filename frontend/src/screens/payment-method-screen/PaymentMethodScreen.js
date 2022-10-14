@@ -29,7 +29,7 @@ export default function PaymentMethodScreen() {
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
-  }, [shippingAddress.navigate]);
+  }, [shippingAddress,navigate]);
 
   console.log(paymentMethodName);
   //event:React.ChangeEvent<HTMLInputElement>
@@ -44,7 +44,7 @@ export default function PaymentMethodScreen() {
   };
   return (
     <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
+      {/* <CheckoutSteps step1 step2 step3></CheckoutSteps> */}
       <Box>
         <Helmet>
           <title>Payment Method</title>

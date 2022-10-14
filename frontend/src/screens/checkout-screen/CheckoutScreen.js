@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import ShippingAddress from "../shipping-address-screen/ShippingAddress";
 import { Box } from "@mui/system";
+import PaymentForm from "../payment-method-screen/PaymentDetails";
+import PlaceOrder from "../place-order-screen/PlaceOrder";
 
 function Copyright() {
   return (
@@ -66,10 +68,15 @@ export default function CheckoutScreen() {
         );
       //   <AddressForm />;
       case 1:
-        return;
+        return(
+        <PaymentForm
+          activeStep={activeStep}
+          steps={steps}
+          handleNext={handleNext}
+        />);
       //    <PaymentForm />;
       case 2:
-        return;
+        return (<PlaceOrder/>);
       //   <Review />;
 
       default:
@@ -102,6 +109,7 @@ export default function CheckoutScreen() {
             <React.Fragment>
               {activeStep === steps.length ? (
                 <React.Fragment>
+                 {/* {getStepContent(activeStep)} */}
                   <Typography variant="h5" gutterBottom>
                     Thank you for your order.
                   </Typography>
