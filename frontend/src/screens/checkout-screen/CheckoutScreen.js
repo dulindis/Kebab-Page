@@ -2,18 +2,16 @@ import React, { useState, useContext } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 
 import Container from "@mui/material/Container";
-import Toolbar from "@mui/material/Toolbar";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { useEffect } from "react";
 import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import ShippingAddress from "../shipping-address-screen/ShippingAddress";
-import { Box } from "@mui/system";
 import PaymentForm from "../payment-method-screen/PaymentDetails";
 import PlaceOrder from "../place-order-screen/PlaceOrder";
 
@@ -30,7 +28,7 @@ function Copyright() {
   );
 }
 
-const theme = createTheme();
+// const theme = createTheme();
 const steps = [
   //   "Sign In",
   "Shipping Address",
@@ -43,7 +41,6 @@ export default function CheckoutScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
     userInfo,
-    // cart: { shippingAddress },
   } = state;
 
   const [activeStep, setActiveStep] = useState(0);
@@ -66,18 +63,17 @@ export default function CheckoutScreen() {
             handleNext={handleNext}
           />
         );
-      //   <AddressForm />;
       case 1:
-        return(
-        <PaymentForm
-          activeStep={activeStep}
-          steps={steps}
-          handleNext={handleNext}
-        />);
-      //    <PaymentForm />;
+        return (
+          <PaymentForm
+            activeStep={activeStep}
+            steps={steps}
+            handleNext={handleNext}
+            handleBack={handleBack}
+          />
+        );
       case 2:
-        return (<PlaceOrder/>);
-      //   <Review />;
+        return <PlaceOrder steps={steps} handleBack={handleBack} />;
 
       default:
         throw new Error("Unknown step");
@@ -94,7 +90,7 @@ export default function CheckoutScreen() {
 
   return (
     <React.Fragment>
-      <ThemeProvider theme={theme}>
+      {/* <ThemeProvider theme={theme}> */}
         <CssBaseline />
 
         <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
@@ -109,7 +105,7 @@ export default function CheckoutScreen() {
             <React.Fragment>
               {activeStep === steps.length ? (
                 <React.Fragment>
-                 {/* {getStepContent(activeStep)} */}
+                  {/* {getStepContent(activeStep)} */}
                   <Typography variant="h5" gutterBottom>
                     Thank you for your order.
                   </Typography>
@@ -122,15 +118,15 @@ export default function CheckoutScreen() {
               ) : (
                 <React.Fragment>
                   {getStepContent(activeStep)}
-
+                  {/* 
                   <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                         Back
                       </Button>
-                    )}
+                    )} */}
 
-                    {activeStep === 0 ? (
+                  {/* {activeStep === 0 ? (
                       ""
                     ) : (
                       <Button
@@ -143,15 +139,15 @@ export default function CheckoutScreen() {
                           ? "Place order"
                           : "Next2"}
                       </Button>
-                    )}
-                  </Box>
+                    )} */}
+                  {/* </Box> */}
                 </React.Fragment>
               )}
             </React.Fragment>
           </Paper>
           <Copyright />
         </Container>
-      </ThemeProvider>
+      {/* </ThemeProvider> */}
       )
     </React.Fragment>
   );

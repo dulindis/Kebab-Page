@@ -11,42 +11,42 @@ import PlaceOrderScreen from "./screens/place-order-screen/PlaceOrderScreen";
 import ProductScreen from "./screens/product-screen/ProductScreen";
 import ProfileScreen from "./screens/profile-screen/ProfileScreen";
 import ShippingAddressScreen from "./screens/shipping-address-screen/ShippingAddressScreen";
-import SinginScreen from './screens/sign-in-screen/SigninScreen';
-import SingupScreen from './screens/sign-up-screen/SignupScreen';
+import SinginScreen from "./screens/sign-in-screen/SigninScreen";
+import SingupScreen from "./screens/sign-up-screen/SignupScreen";
+
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./mui-theme/MuiTheme";
+
 
 function App() {
   return (
     <BrowserRouter>
+      <ThemeProvider theme={theme}>
       <div>
-       something
-       <Header/>
-       <main>
-         <Routes>
-           <Route path="/product/:slug" element={<ProductScreen />} />
-           <Route path="/cart" element={<CartScreen />} />
-           <Route path="/signin" element={<SinginScreen />} />
-           <Route path="/signup" element={<SingupScreen />} />
-           <Route path="/profile" element={<ProfileScreen />} />
-           <Route path="/checkout" element={<CheckoutScreen />} />
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/product/:slug" element={<ProductScreen />} />
+            <Route path="/cart" element={<CartScreen />} />
+            <Route path="/signin" element={<SinginScreen />} />
+            <Route path="/signup" element={<SingupScreen />} />
+            <Route path="/profile" element={<ProfileScreen />} />
+            <Route path="/checkout" element={<CheckoutScreen />} />
 
-           <Route path="/shipping" element={<ShippingAddressScreen />} />
-           <Route path="/placeorder" element={<PlaceOrderScreen />} />
+            <Route path="/shipping" element={<ShippingAddressScreen />} />
+            <Route path="/placeorder" element={<PlaceOrderScreen />} />
 
-           <Route path="/payment" element={<PaymentMethodScreen />} />
-           <Route path="/order/:id" element={<OrderScreen />} />
-           <Route path="/orderhistory" element={<OrderHistoryScreen />} />
+            <Route path="/payment" element={<PaymentMethodScreen />} />
+            <Route path="/order/:id" element={<OrderScreen />} />
+            <Route path="/orderhistory" element={<OrderHistoryScreen />} />
 
-           <Route path="/" element={<HomeScreen />} />
-         </Routes>
-       </main>
-       
-       <Footer/>
+            <Route path="/" element={<HomeScreen />} />
+          </Routes>
+        </main>
+
+        <Footer />
       </div>
-
-
-
-
-
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

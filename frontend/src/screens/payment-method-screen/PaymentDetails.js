@@ -10,13 +10,20 @@ import { Helmet } from "react-helmet-async";
 import {
   Box,
   Button,
+  Container,
   FormControl,
   FormLabel,
   Radio,
   RadioGroup,
 } from "@mui/material";
+import { Stack } from "@mui/system";
 
-export default function PaymentForm({ activeStep, steps, handleNext }) {
+export default function PaymentForm({
+  activeStep,
+  steps,
+  handleBack,
+  handleNext,
+}) {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -33,7 +40,8 @@ export default function PaymentForm({ activeStep, steps, handleNext }) {
 
   useEffect(() => {
     if (!shippingAddress.address) {
-      navigate("/shipping");
+      // navigate("/shipping");
+      navigate("/checkout");
     }
   }, [shippingAddress, navigate]);
 
@@ -52,99 +60,61 @@ export default function PaymentForm({ activeStep, steps, handleNext }) {
 
   return (
     <React.Fragment>
+
       <Helmet>
         <title>Payment Method</title>
       </Helmet>
-      <Typography variant="h6" gutterBottom>
-        <h2>Payment method</h2>
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <form onSubmit={submitHandle}>
-            <FormControl margin="normal" required fullWidth>
-              <FormLabel id="payment-methods-group-label">
-                Payment method
-              </FormLabel>
-              <RadioGroup
-                name="payment-methods-group"
-                aria-labelledby="payment-methods-group-label"
-                defaultValue={paymentMethodName}
-                onChange={handleChange}
-              >
-                <FormControlLabel
-                  control={<Radio />}
-                  label="PayPal"
-                  value="PayPal"
-                  checked={paymentMethodName === "PayPal"}
-                />
-                <FormControlLabel
-                  control={<Radio />}
-                  label="Stripe"
-                  value="Stripe"
-                  checked={paymentMethodName === "Stripe"}
-                />
-              </RadioGroup>
 
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button type="submit" variant="contained" color="primary">
-                  {" "}
-                  {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                </Button>
-              </Box>
-            </FormControl>
-          </form>
-        </Grid>
-      </Grid>
+      <Container sx={{ mt: 3 }}>
 
-      {/* <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardName"
-            label="Name on card"
-            fullWidth
-            autoComplete="cc-name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cardNumber"
-            label="Card number"
-            fullWidth
-            autoComplete="cc-number"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="expDate"
-            label="Expiry date"
-            fullWidth
-            autoComplete="cc-exp"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="cvv"
-            label="CVV"
-            helperText="Last three digits on signature strip"
-            fullWidth
-            autoComplete="cc-csc"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-            label="Remember credit card details for next time"
-          />
-        </Grid>
-      </Grid> */}
+        <Stack alignItems="center">
+
+          <Typography variant="h5" gutterBottom>
+            Payment method
+          </Typography>
+
+          <Box sx={{ mt: 3, maxWidth: "sm" }}>
+            {/* <Grid container spacing={3}> */}
+              {/* <Grid item xs={12} md={16}> */}
+                <form onSubmit={submitHandle}>
+                  <FormControl margin="normal" required fullWidth>
+                    <FormLabel id="payment-methods-group-label">
+                      Payment method
+                    </FormLabel>
+                    <RadioGroup
+                      name="payment-methods-group"
+                      aria-labelledby="payment-methods-group-label"
+                      defaultValue={paymentMethodName}
+                      onChange={handleChange}
+                    >
+                      <FormControlLabel
+                        control={<Radio />}
+                        label="PayPal"
+                        value="PayPal"
+                        checked={paymentMethodName === "PayPal"}
+                      />
+                      <FormControlLabel
+                        control={<Radio />}
+                        label="Stripe"
+                        value="Stripe"
+                        checked={paymentMethodName === "Stripe"}
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                      Back
+                    </Button>
+                    <Button type="submit" variant="contained" color="primary">
+                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                    </Button>
+                  </Box>
+                </form>
+              {/* </Grid> */}
+            {/* </Grid> */}
+          </Box>
+        </Stack>
+      </Container>
     </React.Fragment>
   );
 }

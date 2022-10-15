@@ -50,7 +50,7 @@ const reducer = (state, action) => {
   }
 };
 
-export default function PlaceOrder({ activeStep, steps, handleNext }) {
+export default function PlaceOrder({ activeStep, steps, handleBack, handleNext }) {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -90,6 +90,7 @@ export default function PlaceOrder({ activeStep, steps, handleNext }) {
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
       navigate(`/order/${data.order._id}`);
+      // handleNext()
     } catch (error) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(error));
@@ -191,7 +192,7 @@ export default function PlaceOrder({ activeStep, steps, handleNext }) {
             <strong>Order Total:</strong>
             {cart.totalPrice.toFixed(2)}
           </Typography>
-          <Button
+          {/* <Button
             type="button"
             onClick={placeOrderHandler}
             disabled={cart.cartItems.length === 0 || loading}
@@ -199,9 +200,19 @@ export default function PlaceOrder({ activeStep, steps, handleNext }) {
             {" "}
             Place Order
           </Button>
-          {loading && <CircularProgress />}
+          {loading && <CircularProgress />} */}
         </Grid>
       </Grid>
+      
+
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+            Back
+          </Button>
+          <Button type="submit"   onClick={placeOrderHandler} variant="contained" color="primary">
+          Place order 
+          </Button>
+        </Box>
     </React.Fragment>
   );
 }

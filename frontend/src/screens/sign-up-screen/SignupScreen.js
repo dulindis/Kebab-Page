@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 
@@ -36,7 +36,7 @@ function Copyright(props) {
     </Typography>
   );
 }
-const theme = createTheme();
+// const theme = createTheme();
 
 const SignupScreen = () => {
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const SignupScreen = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    // <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <Helmet>
           <title>Sign In</title>
@@ -191,7 +191,7 @@ const SignupScreen = () => {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 // SignupScreen.propTypes = {

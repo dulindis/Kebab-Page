@@ -1,4 +1,12 @@
-import { Button, FormControl, Input, InputLabel, Paper } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  Input,
+  InputLabel,
+  Paper,
+  Stack,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -10,7 +18,7 @@ import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 
-export default function ShippingAddress({activeStep,steps,handleNext}) {
+export default function ShippingAddress({ activeStep, steps, handleNext }) {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -54,113 +62,111 @@ export default function ShippingAddress({activeStep,steps,handleNext}) {
       })
     );
     // navigate("/payment");
-    handleNext()
+    handleNext();
   };
 
   return (
     <React.Fragment>
+
       <Helmet>
         <title>Shipping Details</title>
       </Helmet>
 
-      <Typography variant="h6" gutterBottom>
-        <h2>Shipping address</h2>
-      </Typography>
-      <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 3 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="fullName"
-              name="fullName"
-              label="Full Name"
-              fullWidth
-              autoComplete="shipping full-name"
-              variant="standard"
-              defaultValue={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="address"
-              name="address"
-              label="Address"
-              fullWidth
-              autoComplete={address || ""}
-              // "shipping address"
-              variant="standard"
-              defaultValue={address}
+      <Container sx={{ mt: 3 }}>
 
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </Grid>
+        <Stack alignItems="center">
+          <Typography variant="h5" gutterBottom>
+            Shipping address
+          </Typography>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="city"
-              name="city"
-              label="City"
-              fullWidth
-              autoComplete="shipping city"
-              variant="standard"
-              defaultValue={city}
+          <Box
+            component="form"
+            noValidate
+            onSubmit={submitHandler}
+            sx={{ mt: 3, maxWidth: "sm" }}
+            sm={{width:"100%"}}
+          >
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="fullName"
+                  name="fullName"
+                  label="Full Name"
+                  fullWidth
+                  autoComplete="shipping full-name"
+                  variant="standard"
+                  defaultValue={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  id="address"
+                  name="address"
+                  label="Address"
+                  fullWidth
+                  autoComplete={address || ""}
+                  // "shipping address"
+                  variant="standard"
+                  defaultValue={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                />
+              </Grid>
 
-              onChange={(e) => setCity(e.target.value)}
-            />
-          </Grid>
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  required
+                  id="city"
+                  name="city"
+                  label="City"
+                  fullWidth
+                  autoComplete="shipping city"
+                  variant="standard"
+                  defaultValue={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </Grid>
 
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="postalCode"
-              name="postalCode"
-              label="Zip / Postal code"
-              fullWidth
-              autoComplete="shipping postal-code"
-              variant="standard"
-              defaultValue={postalCode}
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  required
+                  id="postalCode"
+                  name="postalCode"
+                  label="Zip / Postal code"
+                  fullWidth
+                  autoComplete="shipping postal-code"
+                  variant="standard"
+                  defaultValue={postalCode}
+                  onChange={(e) => setPostalCode(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6} sm={4}>
+                <TextField
+                  required
+                  id="country"
+                  name="country"
+                  label="Country"
+                  fullWidth
+                  autoComplete="shipping country"
+                  variant="standard"
+                  defaultValue={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                />
+              </Grid>
 
-              onChange={(e) => setPostalCode(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              id="country"
-              name="country"
-              label="Country"
-              fullWidth
-              autoComplete="shipping country"
-              variant="standard"
-              defaultValue={country}
-
-              onChange={(e) => setCountry(e.target.value)}
-            />
-          </Grid>
-         <Grid item xs={12}>
-          {/* <FormControlLabel> */}
-          <Button
-              type="submit"
-              // fullWidth
-              variant="contained"
-              color="primary"
-              // className={classes.submit}
-              
-            >
-              {/* Continue */}
-              {activeStep === steps.length - 1 ? "Place order" : "Next"}
-
-            </Button>
-          {/* </FormControlLabel> */}
-           
-          </Grid> 
-        </Grid>
-      </Box>
-
-  
+              <Grid item xs={12}>
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                  <Button type="submit" variant="contained" color="primary">
+                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Stack>
+      </Container>
     </React.Fragment>
   );
 }

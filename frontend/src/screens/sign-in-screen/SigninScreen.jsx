@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import { Helmet } from "react-helmet-async";
@@ -50,7 +50,9 @@ const SigninScreen = () => {
       navigate(redirect);
     }
   }, [navigate, redirect, state.userInfo]);
-  const theme = createTheme();
+  // const theme = createTheme({
+  //   // palette:{}
+  // });
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -69,7 +71,7 @@ const SigninScreen = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    // <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <Helmet>
           <title>Sign In</title>
@@ -142,7 +144,7 @@ const SigninScreen = () => {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 
