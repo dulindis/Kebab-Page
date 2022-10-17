@@ -66,10 +66,9 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
   };
 
   return (
-    <React.Fragment>
-
+    <Container component="main" maxWidth="xs">
       <Helmet>
-        <title>Shipping Details</title>
+        <title>Shipping Details - KebaBomb</title>
       </Helmet>
 
       <Container sx={{ mt: 3 }}>
@@ -84,10 +83,10 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
             noValidate
             onSubmit={submitHandler}
             sx={{ mt: 3, maxWidth: "sm" }}
-            sm={{width:"100%"}}
+           
           >
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   required
                   id="fullName"
@@ -100,7 +99,7 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
                   onChange={(e) => setFullName(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} >
                 <TextField
                   required
                   id="address"
@@ -157,7 +156,9 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Box 
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+                >
                   <Button type="submit" variant="contained" color="primary">
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
@@ -167,6 +168,6 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
           </Box>
         </Stack>
       </Container>
-    </React.Fragment>
+    </Container>
   );
 }

@@ -1,20 +1,19 @@
 import bcrypt from "bcryptjs";
 
-
 const data = {
-  users:[
+  users: [
     {
-     name:"Paulina",
-     email:"paulinaokulska@gmail.com",
-      password:bcrypt.hashSync('123456'),
-      isAdmin:true
+      name: "Paulina",
+      email: "paulinaokulska@gmail.com",
+      password: bcrypt.hashSync("123456"),
+      isAdmin: true,
     },
     {
-      name:"John",
-      email:"user@example.com",
-       password:bcrypt.hashSync('123456'),
-       isAdmin:false
-     }
+      name: "John",
+      email: "user@example.com",
+      password: bcrypt.hashSync("123456"),
+      isAdmin: false,
+    },
   ],
 
   products: [
@@ -81,48 +80,87 @@ const data = {
       description:
         "The famous starter is made with boneless chicken cubes or chunks infused in an aromatic green paste of coriander, mint, and other exotic spices. If you are a vegan you can use paneer instead of chicken and get it customized.",
     },
+
     {
       // _id: '5',
-
-      name: "Coca Cola",
-      slug: "coca-cola",
+      name: "Coca Cola Light- 300ml",
+      slug: "coca-cola--light-300-ml",
       category: "drinks",
-      image: "/images/p5.jpg",
+      image: "/images/p6.jpg",
       price: 300,
       currency: "ISK",
-      countInStock: 5,
-
-      flavour: "normal",
-      rating: 4.5,
-      numReviews: 10,
-      description: "Coca cola drink.",
-      variants: [
-        {
-          name: "Coca Cola Classic",
-          slug: "coca-cola-classic",
-          image: "/images/p7.jpg",
-          countInStock: 5,
-          price: 300,
-
-        },
-        {
-          name: "Coca Cola Light",
-          slug: "coca-cola-classic",
-          image: "/images/p6.jpg",
-          countInStock: 2,
-          price: 250,
-
-        },
-        {
-          name: "Coca Cola Zero",
-          slug: "coca-cola-zero",
-          image: "/images/p8.jpg",
-          countInStock: 1,
-          price: 250,
-
-        },
-      ],
+      countInStock: 10,
+      // flavour: "spicy",
+      // rating: 4.5,
+      // numReviews: 10,
+      description: "Coca Cola Light - 300ml.",
     },
+    {
+      // _id: '6',
+
+      name: "Coca Cola Classic - 300ml",
+      slug: "coca-cola--classic-300-ml",
+      category: "drinks",
+      image: "/images/p7.jpg",
+      price: 300,
+      currency: "ISK",
+      countInStock: 10,
+      // flavour: "spicy",
+      // rating: 4.5,
+      // numReviews: 10,
+      description: "Coca Cola Classic - 300ml.",
+    },
+
+    {
+      // _id: '7',
+
+      name: "Coca Cola Zero - 300ml",
+      slug: "coca-cola-zero-300-ml",
+      category: "drinks",
+      image: "/images/p8.jpg",
+      price: 350,
+      currency: "ISK",
+      countInStock: 10,
+      // flavour: "spicy",
+      // rating: 4.5,
+      // numReviews: 10,
+      description: "Coca Cola Zero - 300ml.",
+    },
+ 
+    
+    {
+      // _id: '7',
+
+      name: "Nestle Pure Life Water - 0.5l",
+      slug: "nestle-pure-life-water-0-5-l",
+      category: "drinks",
+      image: "/images/p5.jpg",
+      price: 250,
+      currency: "ISK",
+      countInStock: 2,
+      // flavour: "spicy",
+      // rating: 4.5,
+      // numReviews: 10,
+      description: "Water.",
+    },
+
+    {
+      // _id: '8',
+
+      name: "Fanta Classic- 300ml",
+      slug: "fanta-classic-300-ml",
+      category: "drinks",
+      image: "/images/p9.jpg",
+      price: 270,
+      currency: "ISK",
+      countInStock: 1,
+      // flavour: "spicy",
+      // rating: 4.5,
+      // numReviews: 10,
+      description: "Fanta Classic.",
+    },
+
+    
   ],
 };
 export default data;

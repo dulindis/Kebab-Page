@@ -22,16 +22,18 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { Link } from "react-router-dom";
-import { Store } from "../Store";
+import { Store } from "../../Store";
 import MenuList from '@mui/material/MenuList';
 
 const pages = [
-  { name: "Dishes", path: "/dishes" },
+  // { name: "Dishes", path: "/dishes" },
   { name: "About us", path: "/about" },
-  { name: "Menu", path: "/menu" },
-  { name: "Order", path: "/order" },
-  { name: "Contact", path: "/contact" },
-  { name: "Cart", path: "/cart" },
+  // { name: "Menu", path: "/menu" },
+  // { name: "Order", path: "/order" },
+  { name: "Contact us", path: "/contact" },
+  { name: "Visit us", path: "/locals" },
+
+  // { name: "Cart", path: "/cart" },
 ];
 // const settings = ["Cart"];
 // const anonymousSettings = [{ page: "Cart", path: "/cart" }];
@@ -116,7 +118,7 @@ useEffect(()=>{},[userInfo])
   };
 
   return (
-    <AppBar position="static" color="primary" enableColorOnDark>
+    <AppBar position="sticky" color="primary" enableColorOnDark>
       <ToastContainer position="bottom-center" limit={1} />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -138,7 +140,7 @@ useEffect(()=>{},[userInfo])
               textDecoration: "none",
             }}
           >
-            <Link to="/">Kebab Shop</Link>
+            <Link to="/">KebaBomb</Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -173,7 +175,7 @@ useEffect(()=>{},[userInfo])
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    <Link to={`${page.path}`}>{page.name}</Link>
+                    <Link to={`${page.path}`}>{page.name} {page.path}</Link>
                   </Typography>
                 </MenuItem>
               ))}
@@ -200,16 +202,17 @@ useEffect(()=>{},[userInfo])
               textDecoration: "none",
             }}
           >
-            <Link to="/">Kebab Shop</Link>
+            <Link to="/">KebaBomb</Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
+              href={page.path}
                 key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page.name}
+                {page.name} 
               </Button>
             ))}
           </Box>

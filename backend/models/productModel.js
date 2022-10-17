@@ -10,16 +10,10 @@ const productSchema = new mongoose.Schema(
     currency: { type: String, required: true },
     countInStock: { type: Number, required: true },
     flavour: { type: String },
-    rating: { type: Number, required: true },
+    rating: { type: Number },
     numReviews: { type: Number },
     description: { type: String },
-    variants: {
-      name: { type: String },
-      slug: { type: String },
-      image: { type: String },
-      countInStock: { type: Number },
-      price: { type: Number },
-    },
+    
   },
   {
     timestamps: true,

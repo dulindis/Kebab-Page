@@ -74,7 +74,7 @@ function ProfileScreen() {
   return (
     <div>
       <Helmet>
-        <title>User Profile</title>
+        <title>User Profile - KebaBomb</title>
       </Helmet>
       <h1>User Profile</h1>
 

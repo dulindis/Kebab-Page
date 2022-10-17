@@ -14,19 +14,7 @@ import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import ShippingAddress from "../shipping-address-screen/ShippingAddress";
 import PaymentForm from "../payment-method-screen/PaymentDetails";
 import PlaceOrder from "../place-order-screen/PlaceOrder";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from '../../components/copyright/Copyright'
 
 // const theme = createTheme();
 const steps = [
@@ -80,8 +68,8 @@ export default function CheckoutScreen() {
     }
   }
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  const handleNext = (noOfSteps = 1) => {
+    setActiveStep(activeStep + noOfSteps);
   };
 
   const handleBack = ({ children }) => {
@@ -145,7 +133,7 @@ export default function CheckoutScreen() {
               )}
             </React.Fragment>
           </Paper>
-          <Copyright />
+          {/* <Copyright /> */}
         </Container>
       {/* </ThemeProvider> */}
       )

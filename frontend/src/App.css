@@ -1,7 +1,19 @@
 .App {
-  text-align: center;
+  /* text-align: "center"; */
+  /* cursor: url(/frontend/baseline_restaurant_menu_black_24dp.png), auto} */
+  /* cursor: "crosshair"   */
+  /* cursor:url(./baseline_restaurant_menu_black_24dp.png),auto; */
+  cursor:url(./baseline_restaurant_menu_black_24dp_hover.png),auto;
+
 }
 
+a:hover, button:hover {
+    cursor:url(./baseline_restaurant_menu_black_24dp.png),auto;
+
+  /* cursor:url(./baseline_restaurant_menu_black_24dp_hover.png),auto; */
+}
+
+/* 
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,4 +36,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

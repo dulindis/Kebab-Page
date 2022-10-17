@@ -20,6 +20,8 @@ import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axios from "axios";
 import { Stack } from "@mui/system";
+// import DrinkChoice from "../../components/drink-choice/DrinkChoice";
+
 export default function CartScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
@@ -103,6 +105,8 @@ export default function CartScreen() {
                     </Button>
                   </ListItem>
                 </List>
+
+                {/* <DrinkChoice></DrinkChoice> */}
               </Stack>
             ))}
             <Box sx={{ alignSelf:"flex-end", mr:2, mb:1 }}>
@@ -121,7 +125,7 @@ export default function CartScreen() {
             </Box>
           </Stack>
         )}
-
+              
 
       </Container>
     </React.Fragment>

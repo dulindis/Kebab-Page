@@ -12,12 +12,13 @@ import axios from "axios";
 import Typography from "@mui/material/Typography";
 
 import { Helmet } from "react-helmet-async";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useContext } from "react";
 import { Store } from "../../Store.js";
 import { toast } from "react-toastify";
 import { getError } from "../../utils/utils.js";
+import Link from "@mui/material/Link";
 
 function Copyright(props) {
   return (
@@ -29,7 +30,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="#">
-        Your Website
+      KebaBomb
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -81,90 +82,90 @@ const SignupScreen = () => {
 
   return (
     // <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <Helmet>
-          <title>Sign In</title>
-        </Helmet>
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <Helmet>
+        <title>Sign Up - KebaBomb</title>
+      </Helmet>
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign Up
+        </Typography>
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          noValidate
+          onSubmit={submitHandler}
+          sx={{ mt: 3 }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign Up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={submitHandler}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  autoFocus
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </Grid>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                autoComplete="name"
+                name="firstName"
+                required
+                fullWidth
+                id="name"
+                label="Name"
+                autoFocus
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
 
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                  autoComplete="current-password"
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                name="confirmPassword"
+                label="Confirm Password"
+                type="password"
+                id="confirmPassword"
+                autoComplete="current-password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </Grid>
+            {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
                 />
               </Grid> */}
 
-              {/* <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={
                     <Checkbox value="allowExtraEmails" color="primary" />
@@ -172,25 +173,42 @@ const SignupScreen = () => {
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid> */}
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Sign Up
+          </Button>
+          <Grid container justifyContent="flex-end">
+            <Grid item>
+              Already have an account? {""}
+              {/* <Link to={`/signup?redirect=${redirect}`}>Sign in</Link> */}
+              {/* <Link component={RouterLink} to={`/signup?redirect=${redirect}`}>
+                Sign in
+              </Link> */}
+              {!userInfo ? (
+                <Link component={RouterLink} to={`/signin`}>
+                  Sign Up 1
+                </Link>
+              ) : (
+                <Link
+                  component={RouterLink}
+                  to={`/signin?redirect=${redirect}`}
+                >
+                  {" "}
+                  Sign Up 2
+                </Link>
+              )}{" "}
+              
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                Already have an account? {""}
-                <Link to={`/signup?redirect=${redirect}`}>Sign in</Link>
-              </Grid>
-            </Grid>
-          </Box>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
+      </Box>
+      <Copyright sx={{ mt: 5 }} />
+    </Container>
     // </ThemeProvider>
   );
 };

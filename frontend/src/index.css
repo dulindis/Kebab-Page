@@ -1,85 +1,40 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 .app-wrapper {
-  display:flex;
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* header a {
-  font-weight: bold;	  font-weight: bold;
-  text-decoration: none;	  text-decoration: none;
-}	 */
-
 main {
-  flex:1;
-  /* padding: 1rem; */
-
+  flex: 1;
 }
 
-/* .products {
+.rating {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  align-items: center;
+  color: #faaf00;
 }
- */
 
-
-
-/* .product {
-
-  border: 1px #404040 solid;
-  margin: 1rem;
-
-} */
-/* 
-.product img {
-
+img {
   width: 100%;
-
-  max-width: 400px;
-
-} */
-
-/* .product-info {
-
-  padding: 1rem;
-
-} */
-
-.rating { display:flex; align-items:center; 
-  color:#FAAF00
+  height: 100%;
 }
-
-/* /* figure {
-  max-width: 50vw;
-} */
-img {width:100%} 
 
 .img-thumbnail {
-  height:80px
+  height: 80px;
 }
 
-.checkout-steps {
-  display:flex;
-  width:100%
-}
 
-.checkout-steps > div {
-  border-bottom: 0.2rem solid #a0a0a0;
-  color:#a0a0a0;
-  padding-right:1rem;
-}
 
-.checkout-steps > div.active {
-  border-bottom: 0.2rem solid #f08000;
-  color:#f08000
+.food-link:hover {
+  cursor: url(/public/restaurant_menu_black_24dp.svg);
+
 }

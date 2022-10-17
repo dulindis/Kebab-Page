@@ -71,7 +71,7 @@ const navigate=useNavigate();
                 <KebabDiningIcon />
               </ListItemIcon>
               <Helmet>
-                <title>{product.name}</title>
+                <title>{product.name} - KebaBomb</title>
               </Helmet>
               <ListItemText primary={product.name} />
             </ListItemButton>

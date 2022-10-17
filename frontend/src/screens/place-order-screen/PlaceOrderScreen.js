@@ -101,7 +101,7 @@ const PlaceOrderScreen = () => {
     <div>
       {/* <CheckoutSteps step1 step2 step3 step4></CheckoutSteps> */}
       <Helmet>
-        <title>Preview Order</title>
+        <title>Preview Order - KebaBomb</title>
       </Helmet>
       <h1>Preview Order</h1>
       <Box>

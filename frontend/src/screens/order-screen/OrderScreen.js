@@ -144,7 +144,7 @@ export default function OrderScreen() {
   ) : (
     <div>
       <Helmet>
-        <title>Order {orderId}</title>
+        <title>Order {orderId} - KebaBomb</title>
       </Helmet>
       <Box>
         <Typography variant="h5" component="div">

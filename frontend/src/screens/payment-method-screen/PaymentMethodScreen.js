@@ -47,7 +47,7 @@ export default function PaymentMethodScreen() {
       {/* <CheckoutSteps step1 step2 step3></CheckoutSteps> */}
       <Box>
         <Helmet>
-          <title>Payment Method</title>
+          <title>Payment Method - KebaBomb</title>
         </Helmet>
         <h1>Payment Method</h1>
         <form onSubmit={submitHandle}>

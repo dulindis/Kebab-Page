@@ -1,14 +1,13 @@
-import BottomNavigation from '@mui/material/BottomNavigation';
-import { Box } from '@mui/system';
-import React from 'react'
+import Container from "@mui/material/Container";
+import BottomNavigation from "@mui/material/BottomNavigation";
+import Copyright from "../copyright/Copyright";
 
 export default function Footer() {
   return (
-    <BottomNavigation >
-        {/* <Box> */}
-        All rights reserved
-        {/* </Box> */}
+    <BottomNavigation sx={{ mt: 5 }}>
+      <Container>
+        <Copyright />
+      </Container>
     </BottomNavigation>
-
-  )
+  );
 }

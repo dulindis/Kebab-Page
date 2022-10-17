@@ -61,7 +61,7 @@ const OrderHistoryScreen = () => {
   return (
     <div>
       <Helmet>
-        <title>Order History</title>
+        <title>Order History - KebaBomb</title>
       </Helmet>
       <h1>Order History</h1>
       {loading ? (

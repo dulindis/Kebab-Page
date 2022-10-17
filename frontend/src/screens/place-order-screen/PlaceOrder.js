@@ -1,12 +1,10 @@
 import React, { useReducer } from "react";
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
   CircularProgress,
   Divider,
-  FormControl,
   Input,
   InputLabel,
   List,
@@ -20,14 +18,25 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Box } from "@mui/system";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getError } from "../../utils/utils";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  FormControl,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+
+import Link from "@mui/material/Link";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,7 +59,12 @@ const reducer = (state, action) => {
   }
 };
 
-export default function PlaceOrder({ activeStep, steps, handleBack, handleNext }) {
+export default function PlaceOrder({
+  activeStep,
+  steps,
+  handleBack,
+  handleNext,
+}) {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -103,96 +117,115 @@ export default function PlaceOrder({ activeStep, steps, handleBack, handleNext }
     }
   }, [cart, navigate]);
 
+
+  // const navigateInCheckout = stepsBack => {
+  //   handleBack(stepsBack)
+  // }
   return (
     <React.Fragment>
       <Helmet>
-        <title>Preview Order</title>
+        <title>Preview Order - KebaBomb</title>
       </Helmet>
-      <Typography variant="h6" gutterBottom>
-        <h2>Preview Order</h2>
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h5" component="div">
-            Shipping
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Name:</strong>
-            {cart.shippingAddress.fullName} <br />
-            <strong>Address:</strong>
-            {cart.shippingAddress.address},{cart.shippingAddress.city},
-            {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+
+      <Container sx={{ mt: 3, minWidth: "md" }}>
+        <Stack flexDirection="column" alignItems="center" alignContent="center">
+          <Typography variant="h5" gutterBottom>
+            Preview Order
           </Typography>
 
-          <Link to="/shipping">Edit</Link>
-        </Grid>
-        <Divider />
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h5" component="div">
-            Payment
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Method:</strong>
-            {cart.paymentMethod}
-          </Typography>
-          <Link to="/payment">Edit</Link>
-          {/* <Divider /> */}
-        </Grid>
-        <Divider />
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6" component="div">
+                Shipping
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Name:</strong>
+                {cart.shippingAddress.fullName} <br />
+                <strong>Address:</strong>
+                {cart.shippingAddress.address},{cart.shippingAddress.city},
+                {cart.shippingAddress.postalCode},{" "}
+                {cart.shippingAddress.country}
+              </Typography>
+              {/* <Button onCLick={navigateInCheckout(3)}>Edit</Button> */}
+              {/* <Link component={RouterLink} to="/shipping">
+                Edit
+              </Link> */}
+            </Grid>
+            <Divider />
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h6" component="div">
+                Payment
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Method:</strong>
+                {cart.paymentMethod}
+              </Typography>
+              {/* <Link component={RouterLink} to="/payment">
+                Edit
+              </Link> */}
+            </Grid>
+            <Divider />
 
-        <Grid item xs={12} sm={16}>
-        <Typography variant="h5" component="div">
-            Items:
-          </Typography>
-          <List>
-            <li>
-              {cart.cartItems.map((item) => (
-                <ListItem divider={true} component="a" href="#simple-list">
-                  <ListItemText primary={item.name} />
+            <Grid item xs={12} sm={16}>
+              <Typography variant="h6" component="div">
+                Items:
+              </Typography>
+              <List>
+                <li>
+                  {cart.cartItems.map((item) => (
+                    <ListItem divider={true} component="a" href={`/product/${item.slug}`}>
+                      <ListItemText primary={item.name} />
 
-                  <figure className="product-image">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="img-thumbnail"
-                    />{" "}
-                  </figure>
+                      <figure className="product-image">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="img-thumbnail"
+                        />{" "}
+                      </figure>
 
-                  {/* <img src={item.image} alt={item.name}></img> */}
-                  <Link to={`/product/${item.slug}`}></Link>
-                  <ListItemText secondary={item.quantity} />
-                  <ListItemText secondary={`${item.price} ${item.currency}`} />
-                </ListItem>
-              ))}
-            </li>
-          </List>
-          <Link to="/cart">Edit</Link>
-        </Grid>
-        <Divider />
+                      <Link
+                        component={RouterLink}
+                        to={`/product/${item.slug}`}
+                      ></Link>
 
-        <Grid item xs={12} sm={16}>
-          <Typography variant="h5" component="div">
-            Order Summary
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Items:</strong>
-            {cart.itemsPrice.toFixed(2)}
-          </Typography>
+                      <ListItemText secondary={item.quantity} />
+                      <ListItemText
+                        secondary={`${item.price} ${item.currency}`}
+                      />
+                    </ListItem>
+                  ))}
+                </li>
+              </List>
+              <Link component={RouterLink} to="/cart">
+                Edit
+              </Link>
+            </Grid>
+            <Divider />
 
-          <Typography variant="body2" color="text.secondary">
-            <strong>Shipping Price:</strong>
-            {cart.shippingPrice.toFixed(2)}
-          </Typography>
+            <Grid item xs={12} sm={16}>
+              <Typography variant="h5" component="div">
+                Order Summary
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Items:</strong>
+                {cart.itemsPrice.toFixed(2)}
+              </Typography>
 
-          <Typography variant="body2" color="text.secondary">
-            <strong>Tax Price:</strong>
-            {cart.taxPrice.toFixed(2)}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            <strong>Order Total:</strong>
-            {cart.totalPrice.toFixed(2)}
-          </Typography>
-          {/* <Button
+              <Typography variant="body2" color="text.secondary">
+                <strong>Shipping Price:</strong>
+                {cart.shippingPrice.toFixed(2)}
+              </Typography>
+
+              <Typography variant="body2" color="text.secondary">
+                <strong>Tax Price:</strong>
+                {cart.taxPrice.toFixed(2)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                <strong>Order Total:</strong>
+                {cart.totalPrice.toFixed(2)}
+              </Typography>
+              {/* <Button
             type="button"
             onClick={placeOrderHandler}
             disabled={cart.cartItems.length === 0 || loading}
@@ -201,18 +234,31 @@ export default function PlaceOrder({ activeStep, steps, handleBack, handleNext }
             Place Order
           </Button>
           {loading && <CircularProgress />} */}
-        </Grid>
-      </Grid>
-      
+            </Grid>
+          </Grid>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-            Back
-          </Button>
-          <Button type="submit"   onClick={placeOrderHandler} variant="contained" color="primary">
-          Place order 
-          </Button>
-        </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "flex-end",
+            }}
+            alignSelf="flex-end"
+          >
+            <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+              Back
+            </Button>
+            <Button
+              type="submit"
+              onClick={placeOrderHandler}
+              variant="contained"
+              color="primary"
+            >
+              Place order
+            </Button>
+          </Box>
+        </Stack>
+      </Container>
     </React.Fragment>
   );
 }
