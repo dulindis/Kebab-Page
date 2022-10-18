@@ -1,13 +1,18 @@
-import { Box, Button, CardActions, CardContent, Paper } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
 import React, { useContext } from "react";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
 
 import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
 import { Store } from "../../Store";
-import Link from "@mui/material/Link";
+import useApi from "../../utils/customHooks";
 
 export default function DrinkCard({ product }) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -15,10 +20,13 @@ export default function DrinkCard({ product }) {
     cart: { cartItems },
   } = state;
 
+
+
   const addToCartHandler = async (item) => {
+    console.log("drink add?");
     const existItem = cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${item._id}`);
+    const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
       window.alert("Sorry. Product is out of stock.");
       return;
@@ -31,17 +39,27 @@ export default function DrinkCard({ product }) {
   };
 
   return (
-    <Paper
+
+<React.Fragment>
+  
+  <Paper
       sx={{
-        height: "500px",
-        width: "500px",
+        maxWidth: "xs",
+        maxHeight: "sm",
       }}
+      md={{ maxWidth: "xs" }}
     >
+
+
       <Box
         component="img"
         sx={{
           position: "relative",
           maxWidth: { xs: 350, md: 500 },
+          marginLeft: 7,
+        }}
+        md={{
+          marginLeft: 2,
         }}
         alt={product.name}
         src={product.image}
@@ -50,14 +68,6 @@ export default function DrinkCard({ product }) {
         justifyContent="center"
         alignItems="center"
       />
-
-      {/* <Box sx={{ position: "relative" }}>
-        <figure>
-          <img src={product.image} alt={product.name} />
-        </figure>
-      </Box>
- */}
-
       <Box
         sx={{
           position: "absolute",
@@ -69,14 +79,19 @@ export default function DrinkCard({ product }) {
           padding: "10px",
         }}
       >
-        <Link component={RouterLink} to={`/product/${product.slug}`} color="secondary">
-          <Typography gutterBottom variant="h5" component="div">
+        <Link
+          component={RouterLink}
+          to={`/product/${product.slug}`}
+          color="secondary"
+        >
+          <Typography             sx={{ml:4}}
+ gutterBottom variant="h5" component="div">
             {product.name}
           </Typography>
         </Link>
-        <Typography variant="body2">Subtitle</Typography>
 
-        <Typography>
+        <Typography             sx={{ml:4}}
+>
           <strong>
             {product.currency} {product.price}
           </strong>
@@ -88,11 +103,16 @@ export default function DrinkCard({ product }) {
             size="small"
             variant="contained"
             onClick={() => addToCartHandler(product)}
+            sx={{ml:4, mt:1}}
           >
             Buy me
           </Button>
         )}
       </Box>
     </Paper>
+
+</React.Fragment>
+    
+
   );
 }

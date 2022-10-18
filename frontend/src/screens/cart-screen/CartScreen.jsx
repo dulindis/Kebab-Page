@@ -56,36 +56,49 @@ export default function CartScreen() {
 
   return (
     <React.Fragment>
-      <Container maxWidth="md" sx={{ mt: 5}} >
-
-      <Helmet>
+      <Container maxWidth="md" sx={{ mt: 5 }}>
+        <Helmet>
           <title>Shopping Cart</title>
         </Helmet>
 
-        
-      {cartItems.length === 0 ? (
-        <Stack alignItems="center">            Cart is empty.{" "}
+        {cartItems.length === 0 ? (
+          <Stack alignItems="center">
+            <Typography variant="h6" gutterBottom>
+              Cart is empty
+            </Typography>
             <Link component={RouterLink} to="/">
               Go shopping
             </Link>
-            </Stack> 
+          </Stack>
         ) : (
-          <Stack alignItems="center"><Typography variant="h4" component="div">
-                  Shopping Cart
-                </Typography>
-            {cartItems.map((item) => (
-              <Stack alignItems="center">
-                
-                <List>
-                  <ListItem divider={true} key={item._id}>
-                    <figure className="product-image">
+          <Stack alignItems="center">
+            <Typography variant="h4" component="div">
+              Shopping Cart
+            </Typography>
+            <List>
+              {cartItems.map((item) => (
+                <Stack
+                // alignItems="center"
+                >
+                  <ListItem
+                    divider={true}
+                    key={item._id}
+                    sx={{ width: "100%" }}
+                  >
+                    <Box
+                      component="img"
+                      src={item.image}
+                      maxWidth="130px"
+                      alt={item.name}
+                    ></Box>
+                    {/* <figure className="product-image">
                       <img
                         src={item.image}
                         alt={item.name}
                         className="img-thumbnail"
                       />{" "}
-                    </figure>
-                    <ListItemText primary={item.name} />
+                    </figure> */}
+                    <ListItemText primary={item.name} sx={{ ml: 3 }} />
                     <Button
                       disabled={item.quantity === 1}
                       onClick={() => updateCartHandler(item, item.quantity - 1)}
@@ -104,18 +117,18 @@ export default function CartScreen() {
                       <DeleteForeverIcon />
                     </Button>
                   </ListItem>
-                </List>
-
-                {/* <DrinkChoice></DrinkChoice> */}
-              </Stack>
-            ))}
-            <Box sx={{ alignSelf:"flex-end", mr:2, mb:1 }}>
-              Subtotal: (
-                {cartItems.reduce((a, c) => a + c.quantity, 0)}) : ISK{" "}
-              <strong> {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}</strong>
+                </Stack>
+              ))}{" "}
+            </List>
+            <Box sx={{ alignSelf: "flex-end", mr: 2, mb: 1 }}>
+              Subtotal: ({cartItems.reduce((a, c) => a + c.quantity, 0)}) : USD{" "}
+              <strong>
+                {" "}
+                {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+              </strong>
             </Box>
 
-            <Box sx={{ alignSelf:"flex-end", mr:1 }}>
+            <Box sx={{ alignSelf: "flex-end", mr: 1 }}>
               <Button
                 disabled={cartItems.length === 0}
                 onClick={() => checkoutHandler()}
@@ -125,8 +138,6 @@ export default function CartScreen() {
             </Box>
           </Stack>
         )}
-              
-
       </Container>
     </React.Fragment>
   );

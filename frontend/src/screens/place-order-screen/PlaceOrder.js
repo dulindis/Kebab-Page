@@ -1,5 +1,6 @@
 import React, { useReducer } from "react";
 import {
+  Avatar,
   Card,
   CardActions,
   CardContent,
@@ -9,6 +10,7 @@ import {
   InputLabel,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemButton,
   ListItemText,
   Paper,
@@ -117,10 +119,6 @@ export default function PlaceOrder({
     }
   }, [cart, navigate]);
 
-
-  // const navigateInCheckout = stepsBack => {
-  //   handleBack(stepsBack)
-  // }
   return (
     <React.Fragment>
       <Helmet>
@@ -146,10 +144,6 @@ export default function PlaceOrder({
                 {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
               </Typography>
-              {/* <Button onCLick={navigateInCheckout(3)}>Edit</Button> */}
-              {/* <Link component={RouterLink} to="/shipping">
-                Edit
-              </Link> */}
             </Grid>
             <Divider />
             <Grid item xs={12} sm={6}>
@@ -160,9 +154,6 @@ export default function PlaceOrder({
                 <strong>Method:</strong>
                 {cart.paymentMethod}
               </Typography>
-              {/* <Link component={RouterLink} to="/payment">
-                Edit
-              </Link> */}
             </Grid>
             <Divider />
 
@@ -170,32 +161,33 @@ export default function PlaceOrder({
               <Typography variant="h6" component="div">
                 Items:
               </Typography>
-              <List>
-                <li>
-                  {cart.cartItems.map((item) => (
-                    <ListItem divider={true} component="a" href={`/product/${item.slug}`}>
-                      <ListItemText primary={item.name} />
+              <List 
+              // justifyContent="space-between"
+              >
+                {cart.cartItems.map((item) => (
+                  <ListItem divider={true} sx={{display:'flex', justifyItems:'space-between'}}>
+                    <ListItemText primary={item.name} />
 
-                      <figure className="product-image">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-thumbnail"
-                        />{" "}
-                      </figure>
-
-                      <Link
-                        component={RouterLink}
-                        to={`/product/${item.slug}`}
-                      ></Link>
-
-                      <ListItemText secondary={item.quantity} />
-                      <ListItemText
-                        secondary={`${item.price} ${item.currency}`}
+                      <Box
+                        component="img"
+                        src={item.image}
+                        maxWidth="130px"
+                        alt={item.name}
+                        sx={{
+                          maxWidth: {
+                            xs: "50px",
+                            sm: "80px",
+                          },
+                        }}
+                        flexGrow="1"
                       />
-                    </ListItem>
-                  ))}
-                </li>
+
+                    <ListItemText secondary={`Q: ${item.quantity}`} />
+                    <ListItemText
+                      secondary={`${item.price} ${item.currency}`}
+                    />
+                  </ListItem>
+                ))}
               </List>
               <Link component={RouterLink} to="/cart">
                 Edit
@@ -225,15 +217,6 @@ export default function PlaceOrder({
                 <strong>Order Total:</strong>
                 {cart.totalPrice.toFixed(2)}
               </Typography>
-              {/* <Button
-            type="button"
-            onClick={placeOrderHandler}
-            disabled={cart.cartItems.length === 0 || loading}
-          >
-            {" "}
-            Place Order
-          </Button>
-          {loading && <CircularProgress />} */}
             </Grid>
           </Grid>
 

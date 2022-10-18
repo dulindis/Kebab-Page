@@ -23,20 +23,22 @@ import AboutScreen from "./screens/about-screen/AboutScreen";
 import React from "react";
 import { Container, Paper } from "@mui/material";
 import PageNotFoundScreen from "./screens/page-not-found-screen/PageNotFoundScreen";
+import { Stack } from "@mui/system";
+import LocalsScreen from "./screens/locals-screen/LocalsScreen";
+import ContactScreen from "./screens/contact-screen/ContactScreen";
+import StripeSuccess from "./components/stripe-success/StripeSuccess";
 
 const useStyles = makeStyles({
   paper: {
     width: "100%",
-    minHeight: "100vh",
+    height: "100vh",
     // cursor: `url(./baseline_restaurant_menu_black_24dp_hover.png),auto`,
-    // backgroundColor: 'grey'
+
   },
   // card: {
   //   backgroundColor: 'blue'
   // }
-  main:{
-    
-  }
+  main: {},
 });
 
 function App() {
@@ -44,7 +46,7 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Paper
+        <Stack
           // classes={
           //   classes.paper
 
@@ -54,10 +56,10 @@ function App() {
           //   // }
           // }
           className="App"
-          xs={{height:"100vh"}}
+          xs={{ height: "100vh" }}
         >
           <Header />
-          <Container component="main">
+          <Container component="main" flexGrow={1} >
             <Routes>
               <Route path="/product/:slug" element={<ProductScreen />} />
               <Route path="/cart" element={<CartScreen />} />
@@ -71,14 +73,16 @@ function App() {
               <Route path="/payment" element={<PaymentMethodScreen />} />
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/orderhistory" element={<OrderHistoryScreen />} />
-              <Route path="/" element={<HomeScreen />} />
-              <Route path="*" element={<PageNotFoundScreen/>} />
+              <Route path="/locals" element={<LocalsScreen />} />
+              <Route path="/contact" element={<ContactScreen />} />
+              <Route path="/success" element={<StripeSuccess />} />
 
+              <Route path="/" element={<HomeScreen />} />
+              <Route path="*" element={<PageNotFoundScreen />} />
             </Routes>
           </Container>
-
           <Footer />
-        </Paper>
+        </Stack>
       </ThemeProvider>
     </BrowserRouter>
   );

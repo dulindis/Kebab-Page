@@ -9,12 +9,14 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.6.2",
-    "os-browserify": "^0.3.0"
+    "os-browserify": "^0.3.0",
+    "stripe": "^10.14.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

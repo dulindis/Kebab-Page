@@ -3,6 +3,9 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import AppBar from "@mui/material/AppBar";
+import Link from "@mui/material/Link";
+import { Link as RouterLink } from "react-router-dom";
+
 import {
   Avatar,
   Badge,
@@ -21,9 +24,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
-import { Link } from "react-router-dom";
 import { Store } from "../../Store";
-import MenuList from '@mui/material/MenuList';
+import MenuList from "@mui/material/MenuList";
 
 const pages = [
   // { name: "Dishes", path: "/dishes" },
@@ -41,7 +43,7 @@ const settings = [
   { page: "Cart", path: "/cart", public: true },
   { page: "Order History", path: "/orderhistory", public: false },
   { page: "User Profile", path: "/profile", public: false },
-  { page: "Sign Out", path: "/signout", public: false },
+  // { page: "Sign Out", path: "/signout", public: false },
 ];
 
 const Search = styled("div")(({ theme }) => ({
@@ -90,7 +92,7 @@ export default function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElCart, setAnchorElCart] = React.useState(null);
 
-useEffect(()=>{},[userInfo])
+  useEffect(() => {}, [userInfo]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -113,8 +115,7 @@ useEffect(()=>{},[userInfo])
     localStorage.removeItem("userInfo");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("paymentMethod");
-    window.location.href="/signin"
-
+    window.location.href = "/signin";
   };
 
   return (
@@ -140,7 +141,9 @@ useEffect(()=>{},[userInfo])
               textDecoration: "none",
             }}
           >
-            <Link to="/">KebaBomb</Link>
+            <Link component={RouterLink} to="/" color="secondary">
+              KebaBomb
+            </Link>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -175,7 +178,7 @@ useEffect(()=>{},[userInfo])
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    <Link to={`${page.path}`}>{page.name} {page.path}</Link>
+                    <Link to={`${page.path}`}>{page.name}</Link>
                   </Typography>
                 </MenuItem>
               ))}
@@ -202,24 +205,47 @@ useEffect(()=>{},[userInfo])
               textDecoration: "none",
             }}
           >
-            <Link to="/">KebaBomb</Link>
+            <Link component={RouterLink} to="/" color="secondary">
+              KebaBomb
+            </Link>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-              href={page.path}
+                href={page.path}
                 key={page.name}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page.name} 
+                {page.name}
               </Button>
             ))}
           </Box>
 
+          {userInfo ? (
+            <Box>
+              <Typography sx={{ typography: { sm: "h7", xs: "body1" } }}>
+                {" "}
+                Hi, <strong>{userInfo.name}!</strong>
+              </Typography>
 
-          {/* woking one */}
-          <Typography>
+              <Link
+                component={RouterLink}
+                to="#signout"
+                onClick={signOutHandler}
+                color="secondary"
+              >
+                <Typography sx={{ typography: { sm: "body2", xs: "p" } }}>
+                  Sign out
+                </Typography>
+              </Link>
+            </Box>
+          ) : (
+            <Link component={RouterLink} to="/signin" color="secondary">
+              Sign in
+            </Link>
+          )}
+          {/* <Typography>
             {userInfo ? (
               <div>
                 <h1>{userInfo.name}</h1>
@@ -230,12 +256,12 @@ useEffect(()=>{},[userInfo])
             ) : (
               <Link to="/signin">Sign in</Link>
             )}
-          </Typography>
+          </Typography> */}
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, m: 2 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenCartMenu} sx={{ p: 0 }}>
-                {cart.cartItems.reduce((a, c) => a + c.quantity, 0) > 0 && (
+                {cart.cartItems.reduce((a, c) => a + c.quantity, 0) > 0 ? (
                   <Badge
                     badgeContent={`${cart.cartItems.reduce(
                       (a, c) => a + c.quantity,
@@ -245,7 +271,7 @@ useEffect(()=>{},[userInfo])
                   >
                     <ShoppingCartIcon alt="Cart" />
                   </Badge>
-                )}
+                ):  <ShoppingCartIcon alt="Cart" />}
               </IconButton>
             </Tooltip>
             <Menu
@@ -269,7 +295,9 @@ useEffect(()=>{},[userInfo])
                   return (
                     <MenuItem key={setting} onClick={handleCloseCartMenu}>
                       <Typography textAlign="center">
-                        <Link to={setting.path}>{setting.page}</Link>
+                        <Link component={RouterLink} to={setting.path}>
+                          {setting.page}
+                        </Link>
                       </Typography>
                     </MenuItem>
                   );
@@ -278,7 +306,7 @@ useEffect(()=>{},[userInfo])
                     return (
                       <MenuItem key={setting} onClick={handleCloseCartMenu}>
                         <Typography textAlign="center">
-                          <Link to={setting.path}>{setting.page}</Link>
+                          <Link component={RouterLink} to={setting.path}>{setting.page}</Link>
                         </Typography>
                       </MenuItem>
                     );
@@ -291,16 +319,4 @@ useEffect(()=>{},[userInfo])
       </Container>
     </AppBar>
   );
-}
-
-{
-  /* 
-if (userInfo) {return(
-                  <MenuItem key={setting.name} onClick={handleCloseCartMenu}>
-                    <Typography textAlign="center">
-                    
-                      <Link to={setting.path}>{setting.name}</Link>
-                    </Typography>
-                  </MenuItem>)
-                } */
 }

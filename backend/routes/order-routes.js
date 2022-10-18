@@ -61,8 +61,7 @@ router.put(
       };
       const updatedOrder = await order.save();
 
-            //remvoe order amoun from the database item
-      // if (order)
+
 
 
       res.send({ message: "Order Paid", order: updatedOrder });

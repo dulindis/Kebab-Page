@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Radio,
   Button,
+  Typography,
 } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -49,13 +50,13 @@ export default function PaymentMethodScreen() {
         <Helmet>
           <title>Payment Method - KebaBomb</title>
         </Helmet>
-        <h1>Payment Method</h1>
+        <Typography variant="h5">Payment Method</Typography>
         <form onSubmit={submitHandle}>
           {/* <Checkbox></Checkbox> */}
           <FormControl margin="normal" required fullWidth>
-            <FormLabel id="payment-methods-group-label">
+            {/* <FormLabel id="payment-methods-group-label">
               Payment method
-            </FormLabel>
+            </FormLabel> */}
             <RadioGroup
               name="payment-methods-group"
               aria-labelledby="payment-methods-group-label"

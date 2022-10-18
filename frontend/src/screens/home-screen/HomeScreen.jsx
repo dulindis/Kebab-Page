@@ -1,31 +1,26 @@
 import React from "react";
 import useApi from "../../utils/customHooks.js";
-import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+
 import CardComponent from "../../components/card/CardComponent.jsx";
 import ResponsiveGrid from "../../components/responsie-grid/ResponsiveGrid.js";
-import { Helmet } from "react-helmet-async";
 import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
-import { Box, Stack } from "@mui/system";
-import DrinkChoiceCarousel from "../../components/drink-choice/DrinkChoiceCarousel.js";
-import LocalDiningIcon from '@mui/icons-material/LocalDining';
-// const hoveredStyle = {
-//   cursor:<LocalDiningIcon/>
-// }
 
+import { Helmet } from "react-helmet-async";
+import DrinkChoiceCarousel from "../../components/drink-choice-carousel/DrinkChoiceCarousel.js";
 
 function HomeScreen() {
   const { loading, error, data } = useApi("/api/products");
-const foodList = data.filter(product=>product.category==="food");
- const drinksList = data.filter(product=>product.category==="drinks")
+  const foodList = data.filter((product) => product.category === "food");
+  const drinksList = data.filter((product) => product.category === "drinks");
   return (
-    <Container component="main" maxWidth="lg" sx={{ mt: 3 }}
-    
-    
-    
-    // sx={{cursor: 'pointer'}}
-    
-    
-    >
+    <Container component="main" maxWidth="lg" sx={{ mt: 3 }}>
       <Helmet>
         <title>KebaBomb - Kebab Shop</title>
       </Helmet>
@@ -41,15 +36,13 @@ const foodList = data.filter(product=>product.category==="food");
           ) : (
             <ResponsiveGrid>
               {foodList.map((product) => {
-                  return (
-                    <Grid item xs={12} sm={6} md={3} key={product.slug}>
-                      <CardComponent product={product} />
-                    </Grid>
-                  );
-             
+                return (
+                  <Grid item xs={12} sm={6} md={3} key={product.slug}>
+                    <CardComponent product={product} />
+                  </Grid>
+                );
               })}
-              <DrinkChoiceCarousel drinksList={drinksList}/>
-
+              <DrinkChoiceCarousel drinksList={drinksList} />
             </ResponsiveGrid>
           )}
         </Box>

@@ -89,7 +89,7 @@ export default function PaymentForm({
                 // sx={{ ml: 15}}
               >
                 <FormLabel id="payment-methods-group-label">
-                  Payment method
+                  Available options
                 </FormLabel>
                 <RadioGroup
                   name="payment-methods-group"

@@ -9,9 +9,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Stack,
   Typography,
 } from "@mui/material";
-import { MdError } from "react-icons/md";
 import { Box, Container } from "@mui/system";
 import RatingComponent from "../../components/rating/Rating";
 import KebabDiningIcon from "@mui/icons-material/KebabDining";
@@ -52,9 +52,8 @@ const navigate=useNavigate();
   ) : error ? (
     <MessegeBox>{error}</MessegeBox>
   ) : (
-    <Container>
-      <Box
-        display="flex"
+    <Container maxWidth="lg" sx={{mt:5}}>
+      <Stack
         flexDirection={{ xs: "column", md: "row" }}
         alignContent={"center"}
       >
@@ -119,15 +118,11 @@ const navigate=useNavigate();
                   Unavailable
                 </Button>
               )}
-              {/* <ListItemText primary={`Status: ${data.countInStock>0 ? data.countInStock : "unavailable"}`} /> */}
             </ListItemButton>
           </ListItem>
         </List>
-      </Box>
+      </Stack>
     </Container>
   );
 }
 
-{
-  /* <ListItemText vriant="text" color="success" primary={`Status:`} /> */
-}

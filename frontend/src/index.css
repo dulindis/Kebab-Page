@@ -7,34 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.app-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
-
-.rating {
-  display: flex;
-  align-items: center;
-  color: #faaf00;
-}
-
 img {
   width: 100%;
   height: 100%;
-}
-
-.img-thumbnail {
-  height: 80px;
-}
-
-
-
-.food-link:hover {
-  cursor: url(/public/restaurant_menu_black_24dp.svg);
-
 }
