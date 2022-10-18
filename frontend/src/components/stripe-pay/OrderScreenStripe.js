@@ -66,58 +66,70 @@ export default function OrderScreenStripe() {
       loadingPay: false,
     });
 
-  // const onApprove = async () => {
-  //   try {
-  //     dispatch({ type: "PAY_REQUEST" });
-  //     const { data } = await axios.put(
-  //       `/api/orders/${order._id}/pay`,
-  //       // details,
-  //       {
-  //         headers: { authorization: `Bearer ${userInfo.token}` },
+  const onApprove = async () => {
+    console.log("token", userInfo.token);
+    try {
+      dispatch({ type: "PAY_REQUEST" });
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/pay`,
+        {orderId:orderId},
+        // details,
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+
+      // const { data } = await axios({
+      //   method: "put",
+      //   url: `/api/orders/${order._id}/pay`,
+      //   data: {
+      //     orderId: orderId,
+      //   },
+      //   headers: { Authorization: `Bearer ${userInfo.token}` },
+      // });
+
+      dispatch({ type: "PAY_SUCCESS", payload: data });
+      toast.success("Order is paid");
+    } catch (err) {
+      dispatch({ type: "PAY_FAIL", payload: getError(err) });
+      toast.error(getError(err));
+    }
+  };
+
+  //   useEffect(() => {
+  //     const fetchOrder = async () => {
+  //       try {
+  //         dispatch({ type: "FETCH_REQUEST" });
+  //         const { data } = await axios.get(`/api/orders/${orderId}`, {
+  //           headers: { authorization: `Bearer ${userInfo.token}` },
+  //         });
+  //         dispatch({ type: "FETCH_SUCCESS", payload: data });
+  //       } catch (err) {
+  //         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
   //       }
-  //     );
-  //     dispatch({ type: "PAY_SUCCESS", payload: data });
-  //     toast.success("Order is paid");
-  //   } catch (err) {
-  //     dispatch({ type: "PAY_FAIL", payload: getError(err) });
-  //     toast.error(getError(err));
-  //   }
-  // };
+  //     };
+  // ;
+  //     if (!userInfo) {
+  //       return navigate("/login");
+  //     }
 
-//   useEffect(() => {
-//     const fetchOrder = async () => {
-//       try {
-//         dispatch({ type: "FETCH_REQUEST" });
-//         const { data } = await axios.get(`/api/orders/${orderId}`, {
-//           headers: { authorization: `Bearer ${userInfo.token}` },
-//         });
-//         dispatch({ type: "FETCH_SUCCESS", payload: data });
-//       } catch (err) {
-//         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
-//       }
-//     };
-// ;
-//     if (!userInfo) {
-//       return navigate("/login");
-//     }
+  //     if (!order._id || successPay || (order._id && order._id !== orderId)) {
+  //       fetchOrder();
+  //       if (successPay) {
+  //         dispatch({ type: "PAY_RESET" });
+  //       }
+  //     } else {
 
-//     if (!order._id || successPay || (order._id && order._id !== orderId)) {
-//       fetchOrder();
-//       if (successPay) {
-//         dispatch({ type: "PAY_RESET" });
-//       }
-//     } else {
-      
-//       handleCheckout();
-//     }
-//   }, [
-//     order,
-//     userInfo,
-//     navigate,
-//     orderId,
-//     handleCheckout,
-//     successPay,
-//   ]);
+  //       handleCheckout();
+  //     }
+  //   }, [
+  //     order,
+  //     userInfo,
+  //     navigate,
+  //     orderId,
+  //     handleCheckout,
+  //     successPay,
+  //   ]);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -131,7 +143,6 @@ export default function OrderScreenStripe() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
-;
     if (!userInfo) {
       return navigate("/login");
     }
@@ -141,15 +152,8 @@ export default function OrderScreenStripe() {
       // if (successPay) {
       //   dispatch({ type: "PAY_RESET" });
       // }
-    } 
-  }, [
-    order,
-    userInfo,
-    navigate,
-    orderId,
-    successPay,
-  ]);
-
+    }
+  }, [order, userInfo, navigate, orderId, successPay]);
 
   //stripe
   const handleCheckout = async () => {
@@ -158,19 +162,25 @@ export default function OrderScreenStripe() {
     try {
       const { data } = await axios.post(
         `/api/create-checkout-session`,
-        { cartItems: order.orderItems, userId: userInfo._id },
-        // {
-        //   headers: {
-        //     authorization: `Bearer ${userInfo.token}`,
-        //   },
-        // }
+        {
+          orderItems: order.orderItems,
+          userId: userInfo._id,
+          orderID: order._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
       );
       console.log("data", data);
 
       if (data.url) {
-        // onApprove();
-        toast.success("Order is paid");
-        window.location = data.url
+        await onApprove();
+        // window.location = data.url
+
+        // toast.success("Order is paid");
+
         // navigate(data.url);
       }
       // if (data.url)
@@ -179,8 +189,6 @@ export default function OrderScreenStripe() {
       console.log("error:", err);
       dispatch({ type: "PAY_FAIL", payload: getError(err) });
       // toast.error(getError(err));
-  
-
     }
   };
 
@@ -189,7 +197,7 @@ export default function OrderScreenStripe() {
   ) : error ? (
     <div>{error}</div>
   ) : (
-    <Container maxWidth="sm" sx={{ mt: 5, mb:10 }}>
+    <Container maxWidth="sm" sx={{ mt: 5, mb: 10 }}>
       <Helmet>
         <title>Order no: {orderId} - KebaBomb</title>
       </Helmet>

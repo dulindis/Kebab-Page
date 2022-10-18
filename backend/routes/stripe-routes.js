@@ -15,12 +15,12 @@ const YOUR_DOMAIN = "http://localhost:4242";
 router.post("/create-checkout-session", async (req, res, next) => {
   try {
     const session = await stripe.checkout.sessions.create({
-      line_items: req.body.cartItems.map((item) => ({
+      line_items: req.body.orderItems.map((item) => ({
         price_data: {
           currency: "usd",
           product_data: {
             name: item.name,
-            images: [item.image],
+            // images: [item.image],
           },
           unit_amount: item.price * 100,
         },
@@ -38,7 +38,9 @@ router.post("/create-checkout-session", async (req, res, next) => {
 
       })),
       mode: "payment",
-      success_url: `${process.env.CLIENT_URL}/success`,
+      // success_url: `${process.env.CLIENT_URL}/success`,
+      success_url: `${process.env.CLIENT_URL}/order/${req.body.orderID}`,
+
       // cancel_url: `${process.env.CLIENT_URL}/checkout`,
       // success_url: "https://example.com/success",
       cancel_url: "https://example.com/cancel",
