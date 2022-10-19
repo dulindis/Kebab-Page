@@ -41,10 +41,12 @@ function useApi(url, slug,_id) {
 
     fetchData();
     // console.log("i fire once");
-    return function cleanup() {
-      cancelRequest = true;
-      console.log("i clean up");
-    };
+
+    // return function cleanup() {
+    //   cancelRequest = true;
+    //   console.log("i clean up");
+    // };
+
   }, [slug,_id]);
 
   return { loading, error, data };

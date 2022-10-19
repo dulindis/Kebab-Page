@@ -8,7 +8,8 @@ const router = express.Router();
 router.get("/products", getShopData);
 router.get("/products/slug/:slug", getShopItem);
 router.get("/products/:id", getShopItemById);
-router.put("/products/:id",updateShopItem)
+router.post("/products/:id",updateShopItem);
+
 
 
 export { router };

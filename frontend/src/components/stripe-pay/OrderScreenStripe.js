@@ -176,9 +176,9 @@ export default function OrderScreenStripe() {
       console.log("data", data);
 
       if (data.url) {
-        await onApprove();
-        // window.location = data.url
-
+         
+        window.location = data.url
+        onApprove();
         // toast.success("Order is paid");
 
         // navigate(data.url);
