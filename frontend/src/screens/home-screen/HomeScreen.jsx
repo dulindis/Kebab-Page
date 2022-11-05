@@ -14,6 +14,7 @@ import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
 
 import { Helmet } from "react-helmet-async";
 import DrinkChoiceCarousel from "../../components/drink-choice-carousel/DrinkChoiceCarousel.js";
+import MuiDrinkCarousel from "../../components/mui-drink-carousel/MuiDrinkCarousel.js";
 
 function HomeScreen() {
   const { loading, error, data } = useApi("/api/products");
@@ -42,7 +43,10 @@ function HomeScreen() {
                   </Grid>
                 );
               })}
-              <DrinkChoiceCarousel drinksList={drinksList} />
+              <Grid item xs={12} sm={6}>
+              <MuiDrinkCarousel  drinksList={drinksList} />
+                  </Grid>
+              {/* <DrinkChoiceCarousel drinksList={drinksList} /> */}
             </ResponsiveGrid>
           )}
         </Box>

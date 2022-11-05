@@ -20,7 +20,9 @@ const theme = createTheme({
       main:"#fff"
     }
   },
-
+  typography:{
+    
+  }
   // components: {
   //   MuiCssBaseline:{
   //     styleOverrides: {

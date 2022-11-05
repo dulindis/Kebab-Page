@@ -1,5 +1,6 @@
 
 import jwt from 'jsonwebtoken';
+// import Product from './models/productModel';
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -34,3 +35,7 @@ export const isAuth = (req, res, next)=>{
     res.status(401).send({message:'No Token'})
   }
 }
+
+
+
+

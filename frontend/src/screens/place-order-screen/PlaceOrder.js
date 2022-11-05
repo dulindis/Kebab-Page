@@ -85,6 +85,7 @@ export default function PlaceOrder({
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: "CREATE_REQUEST" });
+
       const { data } = await axios.post(
         "/api/orders",
         {
@@ -102,6 +103,15 @@ export default function PlaceOrder({
           },
         }
       );
+
+      const bulkUpdate = [];
+      for (let item of cart.cartItems) {
+        bulkUpdate.push(axios.post(`/api/orders/${item._id}`));
+      }
+      console.log("bulkUpdate", bulkUpdate);
+      const res = await axios.all(bulkUpdate);
+      console.log("res", res);
+
       ctxDispatch({ type: "CART_CLEAR" });
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
@@ -161,26 +171,29 @@ export default function PlaceOrder({
               <Typography variant="h6" component="div">
                 Items:
               </Typography>
-              <List 
+              <List
               // justifyContent="space-between"
               >
                 {cart.cartItems.map((item) => (
-                  <ListItem divider={true} sx={{display:'flex', justifyItems:'space-between'}}>
+                  <ListItem
+                    divider={true}
+                    sx={{ display: "flex", justifyItems: "space-between" }}
+                  >
                     <ListItemText primary={item.name} />
 
-                      <Box
-                        component="img"
-                        src={item.image}
-                        maxWidth="130px"
-                        alt={item.name}
-                        sx={{
-                          maxWidth: {
-                            xs: "50px",
-                            sm: "80px",
-                          },
-                        }}
-                        flexGrow="1"
-                      />
+                    <Box
+                      component="img"
+                      src={item.image}
+                      maxWidth="130px"
+                      alt={item.name}
+                      sx={{
+                        maxWidth: {
+                          xs: "50px",
+                          sm: "80px",
+                        },
+                      }}
+                      flexGrow="1"
+                    />
 
                     <ListItemText secondary={`Q: ${item.quantity}`} />
                     <ListItemText
