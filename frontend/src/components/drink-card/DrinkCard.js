@@ -72,66 +72,44 @@ export default function DrinkCard({
           minHeight: "300px",
           padding: "1 rem",
           display: "flex",
-          // alignItems:"space-between"
         }}
-
       >
-      
-
         <Stack direction="column" alignContent="center" justifyContent="center">
-          <ArrowBackIosIcon sx={{ cursor: "pointer", padding:"2rem",fontSize:25 }} onClick={handleBack} />
+          <ArrowBackIosIcon
+            className="controls"
+            sx={{ padding: "2rem", fontSize: 25 }}
+            onClick={handleBack}
+          />
         </Stack>
-        <Box className="center" sx={{ flex: "90%", height: "100%" }}>
-
-          
-        </Box>
+        <Box className="center" sx={{ flex: "90%", height: "100%" }}></Box>
         <Stack direction="column" alignContent="center" justifyContent="center">
           <ArrowForwardIosIcon
-            sx={{ cursor: "pointer" ,  padding:"2rem",fontSize:25 }}
+            className="controls"
+            sx={{ padding: "2rem", fontSize: 25 }}
             onClick={handleForward}
           />
         </Stack>
-
-        {/* <Box
-        component="img"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
+      </Paper>
+      <Stack
+        sx={{ backgroundColor: "rgba(0,0,0,0.7)" }}
+        direction="column"
         alignItems="center"
-        sx={{
-          // position: "relative",
-          maxWidth: { xs: 350, md: 500 },
-         maxHeight:{ xs: 350, md: 500 }
-        }}
-        
-        alt={product.name}
-        src={product.image}
-       
-      />
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          bgcolor: "rgba(0, 0, 0, 0.54)",
-          color: "white",
-          padding: "10px",
-        }}
       >
         <Link
           component={RouterLink}
           to={`/product/${product.slug}`}
           color="secondary"
         >
-          <Typography             sx={{ml:4}}
- gutterBottom variant="h5" component="div">
+          <Typography
+            sx={{ ml: 4, color: "white" }}
+            gutterBottom
+            variant="h5"
+            component="div"
+          >
             {product.name}
           </Typography>
         </Link>
-
-        <Typography             sx={{ml:4}}
->
+        <Typography sx={{ mb: 1, color: "#eee" }}>
           <strong>
             {product.currency} {product.price}
           </strong>
@@ -143,43 +121,12 @@ export default function DrinkCard({
             size="small"
             variant="contained"
             onClick={() => addToCartHandler(product)}
-            sx={{ml:4, mt:1}}
+            sx={{ mb: 3 }}
           >
             Buy me
           </Button>
         )}
-      </Box> */}
-      </Paper>
-      <Box sx={{backgroundColor:'rgba(0,0,0,0.7)'}}>
-      <Link
-          component={RouterLink}
-          to={`/product/${product.slug}`}
-          color="secondary"
-        >
-          <Typography             sx={{ml:4, color:"white"}}
- gutterBottom variant="h5" component="div">
-            {product.name}
-          </Typography>
-        </Link>
-        <Typography             sx={{ml:4}}
->
-          <strong>
-            {product.currency} {product.price}
-          </strong>
-        </Typography>
-        {product.countInStock === 0 ? (
-          <Button disabled>Out of stock</Button>
-        ) : (
-          <Button
-            size="small"
-            variant="contained"
-            onClick={() => addToCartHandler(product)}
-            sx={{ml:4, mt:1}}
-          >
-            Buy me
-          </Button>
-        )}
-      </Box>
+      </Stack>
     </React.Fragment>
   );
 }

@@ -5,6 +5,8 @@ import {
   FormLabel,
   Input,
   InputLabel,
+  Paper,
+  Stack,
 } from "@mui/material";
 import React, { useContext, useReducer, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -12,6 +14,7 @@ import { Store } from "../../Store";
 import { toast } from "react-toastify";
 import { getError } from "../../utils/utils";
 import axios from "axios";
+import { Box } from "@mui/system";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -72,7 +75,9 @@ function ProfileScreen() {
   };
 
   return (
-    <div>
+   <Stack flexDirection="row" justifyItems="center" justifyContent="center">
+     <Paper sx={{padding:4, mt:4, maxWidth:"sm"}}>
+      <Stack direction="column" sx={{maxWidth:"sm"}}>
       <Helmet>
         <title>User Profile - KebaBomb</title>
       </Helmet>
@@ -136,7 +141,9 @@ function ProfileScreen() {
           Update
         </Button>
       </form>
-    </div>
+    </Stack>
+    </Paper>
+   </Stack>
   );
 }
 

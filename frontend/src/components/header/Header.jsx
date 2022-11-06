@@ -7,7 +7,6 @@ import Link from "@mui/material/Link";
 import { Link as RouterLink } from "react-router-dom";
 
 import {
-  Avatar,
   Badge,
   Box,
   Button,
@@ -22,23 +21,14 @@ import {
 import KebabDiningIcon from "@mui/icons-material/KebabDining";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { styled, alpha } from "@mui/material/styles";
-import InputBase from "@mui/material/InputBase";
 import { Store } from "../../Store";
-import MenuList from "@mui/material/MenuList";
 
 const pages = [
-  // { name: "Dishes", path: "/dishes" },
   { name: "About us", path: "/about" },
-  // { name: "Menu", path: "/menu" },
-  // { name: "Order", path: "/order" },
-  { name: "Contact us", path: "/contact" },
+  // { name: "Contact us", path: "/contact" },
   { name: "Visit us", path: "/locals" },
-
-  // { name: "Cart", path: "/cart" },
 ];
-// const settings = ["Cart"];
-// const anonymousSettings = [{ page: "Cart", path: "/cart" }];
+
 const settings = [
   { page: "Cart", path: "/cart", public: true },
   { page: "Order History", path: "/orderhistory", public: false },
@@ -225,7 +215,6 @@ export default function Header() {
           {userInfo ? (
             <Box>
               <Typography sx={{ typography: { sm: "h7", xs: "body1" } }}>
-              
                 Hi, <strong>{userInfo.name}!</strong>
               </Typography>
 
@@ -271,7 +260,9 @@ export default function Header() {
                   >
                     <ShoppingCartIcon alt="Cart" />
                   </Badge>
-                ):  <ShoppingCartIcon alt="Cart" />}
+                ) : (
+                  <ShoppingCartIcon alt="Cart" />
+                )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -306,7 +297,9 @@ export default function Header() {
                     return (
                       <MenuItem key={setting} onClick={handleCloseCartMenu}>
                         <Typography textAlign="center">
-                          <Link component={RouterLink} to={setting.path}>{setting.page}</Link>
+                          <Link component={RouterLink} to={setting.path}>
+                            {setting.page}
+                          </Link>
                         </Typography>
                       </MenuItem>
                     );

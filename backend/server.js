@@ -4,11 +4,13 @@ import { router as seedRoutes } from "./routes/seed-routes.js";
 import { router as userRoutes } from "./routes/user-routes.js";
 import { router as orderRoutes } from "./routes/order-routes.js";
 import { router as stripeRoutes } from "./routes/stripe-routes.js";
+// import { mailingController as mailingRoutes } from "./routes/contact-routes.js";
+
 // import { router } from "./routes/user-routes.js";
 
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import cors from 'cors';
+import cors from "cors";
 
 dotenv.config();
 mongoose
@@ -24,12 +26,12 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(
-//   {origin:true,
-//   // credentials:true
-// }
-
-));
+app.use(
+  cors()
+  //   {origin:true,
+  //   // credentials:true
+  // }
+);
 
 // app.use(express.static("public"))
 // app.use(express.urlencoded({ extended: false }));
@@ -42,7 +44,10 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "OPTIONS, GET, POST, PUT, PATCH, DELETE"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Accept, Content-Type,  X-Auth-Token, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Accept, Content-Type,  X-Auth-Token, Authorization"
+  );
   next();
 });
 
@@ -52,12 +57,12 @@ app.use((req, res, next) => {
 //   next();
 // });
 
-
 app.use("/api", shopRoutes);
 app.use("/api", seedRoutes);
 app.use("/api", userRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", stripeRoutes);
+// app.use("/api", mailingRoutes);
 
 app.get("/api/keys/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");

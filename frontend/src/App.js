@@ -74,7 +74,7 @@ function App() {
               <Route path="/order/:id" element={<OrderScreen />} />
               <Route path="/orderhistory" element={<OrderHistoryScreen />} />
               <Route path="/locals" element={<LocalsScreen />} />
-              <Route path="/contact" element={<ContactScreen />} />
+              {/* <Route path="/contact" element={<ContactScreen />} /> */}
               <Route path="/success" element={<StripeSuccess />} />
 
               <Route path="/" element={<HomeScreen />} />

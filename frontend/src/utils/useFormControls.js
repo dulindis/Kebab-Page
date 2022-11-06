@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
+import axios from "axios";
+
+import { axiosInstance } from "../configAxios.js";
 
 const initialFormValues = {
     fullName: "",
@@ -44,13 +48,65 @@ const initialFormValues = {
       });
       validate({ [name]: value });
     };
+
+    // const resetForm = () => {
+    //   setState({
+    //     name: "",
+    //     email: "",
+    //     message: "",
+    //   });
+    // };
+  
+    // const onInputChange = (event) => {
+    //   const { name, value } = event.target;
+    //   setState({
+    //     ...state,
+    //     [name]: value,
+    //   });
+    // };
+
+
     const handleFormSubmit = async (e) => {
       e.preventDefault();
+      const toastID = toast.loading("Sending..."
+      // , {
+      //   position: "bottom-center",
+      //   autoClose: 5000,
+      // }
+      );
+
       if (formIsValid()) {
-        // await postContactForm(values);
-        alert("You've posted your form!")
+        try {
+          
+          const reply = await axiosInstance.post(`/api/send`, {values});
+          console.log(
+            'reply',reply
+          )
+          if (reply.data.sent === false) {
+            throw "message not sent";
+          }
+          toast.update(toastID, {
+            render: "Your message has been sucessfully sent.",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+            closeOnClick: true,
+          });
+          // resetForm();
+        } catch (error) {
+          console.log('error',error)
+          toast.update(toastID, {
+            render: "Something went wrong.",
+            type: "error",
+            isLoading: false,
+            autoClose: 5000,
+            status: error.status,
+          });
+        }
       }
     };
+
+
     const formIsValid = (fieldValues = values) => {
       const isValid =
         fieldValues.fullName &&

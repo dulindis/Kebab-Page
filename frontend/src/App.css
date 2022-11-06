@@ -5,7 +5,8 @@
 }
 
 a:hover,
-button:hover {
+button:hover,
+.controls:hover {
   cursor: url(./assets/baseline_restaurant_menu_black_24dp.png) 12 12, auto;
 }
 
