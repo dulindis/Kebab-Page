@@ -1,0 +1,149 @@
+version: "3.9"
+
+services:
+  api:
+    restart: always
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: kebabomb_mern_api
+    volumes:
+      # don't overwrite this folder in container with the local one
+      - "/app/node_modules"
+      # map current local directory to the /app inside the container
+      #This is a must for development in order to update our container whenever a change to the source code is made. Without this, you would have to rebuild the image each time you make a change to source code.
+      - ./server:/app
+    ports:
+      - 5000:5000
+
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      MONGODB_URI_LOCAL: ${MONGODB_URI_LOCAL}
+      MONGODB_URI: ${MONGODB_URI}
+      PAYPAL_CLIENT_ID: ${APAYPAL_CLIENT_ID}
+      STRIPE_SECRET_API_KEY_TEST: ${STRIPE_SECRET_API_KEY_TEST}
+      CLIENT_URL: ${CLIENT_URL}
+      # TODO:fix clien url env
+      NODEMAILER_USER: ${NODEMAILER_USER}
+      NODEMAILER_PASS: ${NODEMAILER_PASS}
+    networks:
+      - kebabomb-mern-stack
+  client:
+    restart: always
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: kebabomb_mern_frontend
+    environment:
+      REACT_APP_API_URL: ${REACT_APP_API_URL}
+    volumes:
+      - "/app/node_modules"
+      - ./client:/app
+    ports:
+      - 3000:3000
+    depends_on:
+      - api
+    networks:
+      - kebabomb-mern-stack
+  nginx:
+    restart: always
+    depends_on:
+      - api
+      - client
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3050:80
+    networks:
+      - kebabomb-mern-stack
+
+networks:
+  kebabomb-mern-stack:
+    driver: bridge
+
+volumes:
+  mongodb-data:
+    driver: local
+# version: "3"
+# services:
+#   nginx:
+#     container_name: porfolio_nginx_webserver
+#     restart: always
+#     image: "nginx"
+#     depends_on:
+#       - api
+#       - client
+#     build:
+#       dockerfile: Dockerfile.dev
+#       # dockerfile: Dockerfile
+#       context: ./nginx
+#     ports:
+#       - "3050:80"
+#     volumes:
+#       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+#       - ./nginx/:/etc/nginx/conf.d
+#     # networks:
+#     #   - portfolio-mern
+#   api:
+#     container_name: portfolio_api
+#     restart: always
+
+#     build:
+#       context: "./server"
+#       # target: production
+#       # dockerfile: Dockerfile
+#       dockerfile: Dockerfile.dev
+#       # dockerfile: Dockerfile
+#     volumes:
+#       - "/app/node_modules"
+#       - "./server:/app"
+#     environment:
+#       - API_KEY=${API_KEY}
+#       - AUTH_DOMAIN=${AUTH_DOMAIN}
+#       - PROJECT_ID=${PROJECT_ID}
+#       - STORAGE_BUCKET=${STORAGE_BUCKET}
+#       - MESSAGING_SENDER_ID=${MESSAGING_SENDER_ID}
+#       - APP_ID=${APP_ID}
+#       - MEASUREMENT_ID=${MEASUREMENT_ID}
+#       - NODEMAILER_USER=${NODEMAILER_USER}
+#       - NODEMAILER_PASS=${NODEMAILER_PASS}
+#       - MAILING_PROJECT_ID=${MAILING_PROJECT_ID}
+#       - MAILING_SENDER_EMAIL_ADDRESS=${MAILING_SENDER_EMAIL_ADDRESS}
+#       - MAILING_SERVICE_CLIENT_ID=${MAILING_SERVICE_CLIENT_ID}
+#       - MAILING_SERVICE_CLIENT_SECRET=${MAILING_SERVICE_CLIENT_SECRET}
+#       - MAILING_SERVICE_REFRESH_TOKEN=${MAILING_SERVICE_REFRESH_TOKEN}
+#       - MAILING_SERVICE_ACCESS_TOKEN=${MAILING_SERVICE_ACCESS_TOKEN}
+#       - MAILING_REDIRECT_URI=${MAILING_REDIRECT_URI}
+#     # ports:
+#     #   - "5000:5000"
+
+#     # networks:
+#     #   - portfolio-mern
+#   client:
+#     container_name: portfolio_client
+#     # restart: always
+#     stdin_open: true
+#     build:
+#       context: "./client"
+#       # target: production
+#       # dockerfile: Dockerfile
+#       dockerfile: Dockerfile.dev
+#       # dockerfile: Dockerfile
+#     volumes:
+#       - "/app/node_modules"
+#       - "./client:/app"
+#     environment:
+#       - REACT_APP_API_URL=${REACT_APP_API_URL}
+#       # - PUBLIC_URL=${PUBLIC_URL}
+#     # command: npm run start
+#     # tty: true
+#     # # added
+#     # ports:
+#     #   - "3000:3000"
+#     # networks:
+#     #   - portfolio-mern
+#   # networks:
+#   #   portfolio-mern:
+#   #     driver: bridge
+

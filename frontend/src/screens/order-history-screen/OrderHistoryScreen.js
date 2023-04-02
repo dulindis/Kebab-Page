@@ -1,19 +1,20 @@
-import { Button, CircularProgress } from "@mui/material";
 import React, { useContext, useEffect, useReducer } from "react";
+
+import axios from "axios";
 import { Helmet } from "react-helmet-async";
+import { Store } from "../../Store";
+import { useNavigate } from "react-router-dom";
+import { getError } from "../../utils/utils";
+
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Store } from "../../Store";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { getError } from "../../utils/utils";
-
-
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -87,19 +88,34 @@ const OrderHistoryScreen = () => {
                   key={order._id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                <TableCell component="th" scope="row">{order._id}</TableCell>
-                  <TableCell align="right">{order.createdAt.substring(0,10)}</TableCell>
-                  <TableCell align="right">{order.totalPrice.toFixed(2)}</TableCell>
-                  <TableCell align="right">{order.isPaid ? order.paidAt.substring(0,10) : 'No'}</TableCell>
-                  <TableCell align="right">{order.isDelivered ? order.isDelivered.substring(0,10) : 'No'}</TableCell>
-                  <TableCell align="right">
-                    <Button onClick={()=>{navigate(`/order/${order._id}`)}}>Details</Button>
+                  <TableCell component="th" scope="row">
+                    {order._id}
                   </TableCell>
-
-
+                  <TableCell align="right">
+                    {order.createdAt.substring(0, 10)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {order.totalPrice.toFixed(2)}
+                  </TableCell>
+                  <TableCell align="right">
+                    {order.isPaid ? order.paidAt.substring(0, 10) : "No"}
+                  </TableCell>
+                  <TableCell align="right">
+                    {order.isDelivered
+                      ? order.isDelivered.substring(0, 10)
+                      : "No"}
+                  </TableCell>
+                  <TableCell align="right">
+                    <Button
+                      onClick={() => {
+                        navigate(`/order/${order._id}`);
+                      }}
+                    >
+                      Details
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
-             
             </TableBody>
           </Table>
         </TableContainer>

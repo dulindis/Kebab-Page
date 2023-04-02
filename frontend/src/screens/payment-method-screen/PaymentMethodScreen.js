@@ -1,20 +1,17 @@
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  InputLabel,
-  FormLabel,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  Button,
-  Typography,
-} from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
+
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
-import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
+// import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Typography from "@mui/material/Typography";
 
 export default function PaymentMethodScreen() {
   const navigate = useNavigate();
@@ -30,7 +27,7 @@ export default function PaymentMethodScreen() {
     if (!shippingAddress.address) {
       navigate("/shipping");
     }
-  }, [shippingAddress,navigate]);
+  }, [shippingAddress, navigate]);
 
   console.log(paymentMethodName);
   //event:React.ChangeEvent<HTMLInputElement>

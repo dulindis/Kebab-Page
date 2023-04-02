@@ -1,0 +1,27 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd backend &&  yarn install && cd ../frontend && yarn install && yarn build",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:server": "cd backend && nodemon server.js",
+    "start:client": "cd frontend && yarn start",
+    "dev": "concurrently --kill-others-on-fail  \"yarn dev:server\" \"yarn start:client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dulinDis/KebabPage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dulinDis/KebabPage/issues"
+  },
+  "homepage": "https://github.com/dulinDis/KebabPage#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

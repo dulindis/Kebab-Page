@@ -1,0 +1,13 @@
+FROM node:19-bullseye
+# LABEL version="1.0"
+LABEL description="React Frontent for Kebabomb"
+WORKDIR /app
+COPY ./package.json ./
+COPY ./yarn.lock ./
+RUN npm install
+COPY . .
+CMD ["sh","-c", "npm run start"]
+
+
+
+

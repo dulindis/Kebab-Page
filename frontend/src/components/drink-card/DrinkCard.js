@@ -91,7 +91,7 @@ export default function DrinkCard({
         </Stack>
       </Paper>
       <Stack
-        sx={{ backgroundColor: "rgba(0,0,0,0.7)" }}
+        sx={{ backgroundColor: "rgba(0,0,0,0.7)", }}
         direction="column"
         alignItems="center"
       >

@@ -1,22 +1,16 @@
-import {
-  Button,
-  Container,
-  FormControl,
-  Input,
-  InputLabel,
-  Paper,
-  Stack,
-} from "@mui/material";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { Box } from "@mui/system";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
+
 import { Helmet } from "react-helmet-async";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 export default function ShippingAddress({ activeStep, steps, handleNext }) {
   const navigate = useNavigate();
@@ -32,12 +26,6 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
     shippingAddress.postalCode || ""
   );
   const [country, setCountry] = useState(shippingAddress.country || "");
-
-  // useEffect(() => {
-  //   // if (!userInfo) {
-  //   //   navigate("/signin?redirect=/shipping");
-  //   // }
-  // }, [userInfo, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -72,7 +60,6 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
       </Helmet>
 
       <Container sx={{ mt: 3 }}>
-
         <Stack alignItems="center">
           <Typography variant="h5" gutterBottom>
             Shipping address
@@ -83,7 +70,6 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
             noValidate
             onSubmit={submitHandler}
             sx={{ mt: 3, maxWidth: "sm" }}
-           
           >
             <Grid container spacing={3}>
               <Grid item xs={12}>
@@ -99,7 +85,7 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
                   onChange={(e) => setFullName(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <TextField
                   required
                   id="address"
@@ -107,7 +93,6 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
                   label="Address"
                   fullWidth
                   autoComplete={address || ""}
-                  // "shipping address"
                   variant="standard"
                   defaultValue={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -156,9 +141,7 @@ export default function ShippingAddress({ activeStep, steps, handleNext }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Box 
-                sx={{ display: "flex", justifyContent: "flex-end" }}
-                >
+                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                   <Button type="submit" variant="contained" color="primary">
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>

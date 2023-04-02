@@ -1,7 +1,7 @@
-import { Typography } from "@mui/material";
 import Container from "@mui/material/Container";
-import { Box } from "@mui/system";
-import Stack from "@mui/system/Stack";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 const PageNotFoundScreen = () => {
   return (

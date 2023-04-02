@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path';
 import { router as shopRoutes } from "./routes/product-routes.js";
 import { router as seedRoutes } from "./routes/seed-routes.js";
 import { router as userRoutes } from "./routes/user-routes.js";
@@ -14,7 +15,7 @@ import cors from "cors";
 
 dotenv.config();
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI_LOCAL ? process.env.MONGODB_URI_LOCAL : process.env.MONGODB_URI)
   .then(() => {
     console.log("connected to db");
   })
@@ -71,6 +72,10 @@ app.get("/api/keys/paypal", (req, res) => {
 // app.get("/api/products", (req, res) => {
 //   res.send;
 // });
+
+const __dirname=path.resolve();
+app.use(express.static(path.join(__dirname,'/frontend/build')));
+app.get("*",(req,res)=>res.sendFile(path.join(__dirname,'/frontend/build/index.html')))
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

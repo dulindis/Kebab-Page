@@ -1,20 +1,21 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";
+
 import useApi from "../../utils/customHooks.js";
+import ResponsiveGrid from "../../components/responsie-grid/ResponsiveGrid.js";
+import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
 
 import Box from "@mui/material/Box";
+import CardComponent from "../../components/card/CardComponent.jsx";
 import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import CardComponent from "../../components/card/CardComponent.jsx";
-import ResponsiveGrid from "../../components/responsie-grid/ResponsiveGrid.js";
-import MessegeBox from "../../components/messege-box/MessegeBox.jsx";
-
-import { Helmet } from "react-helmet-async";
 import DrinkChoiceCarousel from "../../components/drink-choice-carousel/DrinkChoiceCarousel.js";
 import MuiDrinkCarousel from "../../components/mui-drink-carousel/MuiDrinkCarousel.js";
+import CarouselComponent from "../../components/mui-carousel/CarouselComponent.jsx";
 
 function HomeScreen() {
   const { loading, error, data } = useApi("/api/products");
@@ -44,8 +45,10 @@ function HomeScreen() {
                 );
               })}
               <Grid item xs={12} sm={6}>
-              <MuiDrinkCarousel  drinksList={drinksList} />
-                  </Grid>
+                {/* <MuiDrinkCarousel drinksList={drinksList} /> */}{" "}
+                <CarouselComponent drinksList={drinksList} />
+              </Grid>
+
               {/* <DrinkChoiceCarousel drinksList={drinksList} /> */}
             </ResponsiveGrid>
           )}

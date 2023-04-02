@@ -1,6 +1,10 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
 import React from "react";
 import { ContactForm } from "../../components/contact-form/ContactForm";
+
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 export default function ContactScreen() {
   return (
@@ -9,7 +13,7 @@ export default function ContactScreen() {
         <Typography variant="h4" gutterBottom>
           Contact Us
         </Typography>
-        <ContactForm/>
+        <ContactForm />
       </Stack>
     </Container>
   );

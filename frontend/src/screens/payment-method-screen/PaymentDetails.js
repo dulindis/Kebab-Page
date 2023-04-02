@@ -1,22 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 import { Helmet } from "react-helmet-async";
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  FormLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
-import { Stack } from "@mui/system";
+
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 export default function PaymentForm({
   activeStep,
@@ -64,13 +61,8 @@ export default function PaymentForm({
         <title>Payment Method - KebaBomb</title>
       </Helmet>
 
-      <Container sx={{ mt: 3,minWidth:"md"}}>
-      
-        <Stack 
-        flexDirection="column"
-        alignItems="center"
-        alignContent="center"
-        >
+      <Container sx={{ mt: 3, minWidth: "md" }}>
+        <Stack flexDirection="column" alignItems="center" alignContent="center">
           <Typography variant="h5" gutterBottom>
             Payment method
           </Typography>
@@ -81,7 +73,11 @@ export default function PaymentForm({
             // sx={{ mt: 3, maxWidth: "sm" }}
             alignSelf="stretch"
           >
-            <Stack flexDirection="column" alignContent="center" alignItems="center">
+            <Stack
+              flexDirection="column"
+              alignContent="center"
+              alignItems="center"
+            >
               <FormControl
                 margin="normal"
                 required
@@ -111,9 +107,12 @@ export default function PaymentForm({
                   />
                 </RadioGroup>
               </FormControl>
-              <Stack alignItems="baseline"  flexDirection="row" alignSelf="flex-end"  
-              
-              // sx={{ display: "flex", alignItems:"center",justifyContent: "flex-end" }}
+              <Stack
+                alignItems="baseline"
+                flexDirection="row"
+                alignSelf="flex-end"
+
+                // sx={{ display: "flex", alignItems:"center",justifyContent: "flex-end" }}
               >
                 <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                   Back

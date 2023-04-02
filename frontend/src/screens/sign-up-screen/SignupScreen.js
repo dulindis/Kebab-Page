@@ -1,24 +1,22 @@
-import React, { useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Container from "@mui/material/Container";
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import Typography from "@mui/material/Typography";
 
 import { Helmet } from "react-helmet-async";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useContext } from "react";
 import { Store } from "../../Store.js";
 import { toast } from "react-toastify";
 import { getError } from "../../utils/utils.js";
+
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 
 function Copyright(props) {
   return (
@@ -30,14 +28,12 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="#">
-      KebaBomb
-      </Link>{" "}
+        KebaBomb
+      </Link>
       {new Date().getFullYear()}
-      {"."}
     </Typography>
   );
 }
-// const theme = createTheme();
 
 const SignupScreen = () => {
   const navigate = useNavigate();
@@ -75,13 +71,11 @@ const SignupScreen = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate(redirect || "/");
     } catch (err) {
-      // alert('Invalid email or password')
       toast.error(getError(err));
     }
   };
 
   return (
-    // <ThemeProvider theme={theme}>
     <Container component="main" maxWidth="xs">
       <Helmet>
         <title>Sign Up - KebaBomb</title>
@@ -158,21 +152,6 @@ const SignupScreen = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Grid>
-            {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
-                />
-              </Grid> */}
-
-            {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
           </Grid>
           <Button
             type="submit"
@@ -184,38 +163,26 @@ const SignupScreen = () => {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              Already have an account? {""}
-              {/* <Link to={`/signup?redirect=${redirect}`}>Sign in</Link> */}
-              {/* <Link component={RouterLink} to={`/signup?redirect=${redirect}`}>
-                Sign in
-              </Link> */}
+              Already have an account?
               {!userInfo ? (
                 <Link component={RouterLink} to={`/signin`}>
-                  Sign Up 1
+                  Sign In
                 </Link>
               ) : (
                 <Link
                   component={RouterLink}
                   to={`/signin?redirect=${redirect}`}
                 >
-                  {" "}
-                  Sign Up 2
+                  Sign Up
                 </Link>
               )}{" "}
-              
             </Grid>
           </Grid>
         </Box>
       </Box>
       <Copyright sx={{ mt: 5 }} />
     </Container>
-    // </ThemeProvider>
   );
 };
-// SignupScreen.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
 
 export default SignupScreen;
-
-// export default withStyles(styles)(SigninScreen);

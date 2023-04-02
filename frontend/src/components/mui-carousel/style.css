@@ -1,0 +1,35 @@
+.carousel-container {
+  max-width: 1000px;
+  width: 95%;
+  /* max-height:600px; */
+  /* height:500px */
+  /* width:900px; */
+  position: relative;
+}
+
+.carousel {
+  position: relative;
+  width: 100%;
+  /* padding-top: calc(700 / 1200 * 100%); */
+  overflow: hidden;
+  /* background: red; */
+}
+
+.circle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.circle {
+  border: 1px solid gray;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 3px;
+  cursor: pointer;
+}
+.circle-full {
+  background-color: gray;
+}
