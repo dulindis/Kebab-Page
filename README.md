@@ -3,7 +3,7 @@
 ## Title
 Kebabomb E-commerce
 ## Introduction
-MERN stact ecommerce website
+MERN stack ecommerce website with options to pay with PayPal and Stripe.
 ## Technologies
 [![My Skills](https://skillicons.dev/icons?i=nodejs,express,mongodb,react,js,materialui&perline=3)](https://skillicons.dev)
 ## Launch
