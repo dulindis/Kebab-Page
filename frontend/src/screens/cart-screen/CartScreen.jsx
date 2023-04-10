@@ -90,13 +90,6 @@ export default function CartScreen() {
                       maxWidth="130px"
                       alt={item.name}
                     ></Box>
-                    {/* <figure className="product-image">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="img-thumbnail"
-                      />{" "}
-                    </figure> */}
                     <ListItemText primary={item.name} sx={{ ml: 3 }} />
                     <Button
                       disabled={item.quantity === 1}
@@ -117,12 +110,11 @@ export default function CartScreen() {
                     </Button>
                   </ListItem>
                 </Stack>
-              ))}{" "}
+              ))}
             </List>
             <Box sx={{ alignSelf: "flex-end", mr: 2, mb: 1 }}>
               Subtotal: ({cartItems.reduce((a, c) => a + c.quantity, 0)}) : USD{" "}
               <strong>
-                {" "}
                 {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
               </strong>
             </Box>

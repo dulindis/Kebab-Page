@@ -20,7 +20,10 @@ import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import { Store } from "../../Store";
 import { getError } from "../../utils/utils";
 import { toast } from "react-toastify";
+
 import axios from "axios";
+import { Grid, ListItem } from "@mui/material";
+// import {axiosInstance as axios} from "../../configAxios";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -65,6 +68,7 @@ const PlaceOrderScreen = () => {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: "CREATE_REQUEST" });
+
       const { data } = await axios.post(
         "/api/orders",
         {
@@ -82,6 +86,7 @@ const PlaceOrderScreen = () => {
           },
         }
       );
+      console.log("data", data);
       ctxDispatch({ type: "CART_CLEAR" });
       dispatch({ type: "CREATE_SUCCESS" });
       localStorage.removeItem("cartItems");
@@ -119,8 +124,7 @@ const PlaceOrderScreen = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Link to="/shipping">Edit</Link>
-            {/* <Button size="small">Place Order</Button> */}
+            <Link to="/shipping">Edit Address</Link>
           </CardActions>
         </Card>
         <Divider />
@@ -136,37 +140,44 @@ const PlaceOrderScreen = () => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Link to="/payment">Edit</Link>
+            <Link to="/payment">Edit Payment</Link>
           </CardActions>
         </Card>
         <Divider />
 
-        <Card sx={{ flexGrow: 0, width: "500px" }}>
-          <List>
-            <li>
+        <Card>
+          <CardContent>
+            <List>
               {cart.cartItems.map((item) => (
-                <ListItemButton component="a" href="#simple-list">
+                <ListItem
+                  divider={true}
+                  sx={{ display: "flex", justifyItems: "space-between" }}
+                >
                   <ListItemText primary={item.name} />
-
-                  <figure className="product-image">
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="img-thumbnail"
-                    />{" "}
-                  </figure>
-
-                  {/* <img src={item.image} alt={item.name}></img> */}
+                  <Box
+                    component="img"
+                    src={item.image}
+                    maxWidth="130px"
+                    alt={item.name}
+                    sx={{
+                      maxWidth: {
+                        xs: "50px",
+                        sm: "80px",
+                      },
+                    }}
+                    flexGrow="1"
+                  />
                   <Link to={`/product/${item.slug}`}></Link>
                   <ListItemText secondary={item.quantity} />
                   <ListItemText secondary={`${item.price} ${item.currency}`} />
-                </ListItemButton>
+                </ListItem>
               ))}
-            </li>
-          </List>
-          <Link to="/cart">Edit</Link>
+            </List>
+          </CardContent>
+          <CardActions>
+            <Link to="/cart">Edit Cart</Link>
+          </CardActions>
         </Card>
-
         <Card>
           <CardContent>
             <Typography variant="h5" component="div">
@@ -197,7 +208,6 @@ const PlaceOrderScreen = () => {
               onClick={placeOrderHandler}
               disabled={cart.cartItems.length === 0 || loading}
             >
-              {" "}
               Place Order
             </Button>
             {loading && <CircularProgress />}

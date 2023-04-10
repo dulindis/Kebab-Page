@@ -18,7 +18,12 @@ import { toast } from "react-toastify";
 import React, { useContext, useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { Store } from "../../Store";
+
 import axios from "axios";
+// import {axiosInstance as axios} from "../../configAxios";
+
+
+
 import { getError } from "../../utils/utils";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/system";
@@ -157,20 +162,7 @@ export default function PayPalScreen() {
           },
         }
       );
-        // if (data.url) 
-        console.log('data',data);
-
-        // if (data.url) 
-
-        // {
-        //   navigate(data.url);
-        //   // console.log(data.session);
-
-        //   toast.success("Order is paid");
-        // }
-
     }  catch (error) {
-      console.log('error:', error)
       toast.error(getError(error));
     }
   };
@@ -264,13 +256,13 @@ export default function PayPalScreen() {
                   secondary={`Q: ${item.quantity}`}
                   sx={{ ml: 2 }}
                 />
-                <ListItemText secondary={`${item.price} ${item.currency}`} />
+                <ListItemText secondary={`${item.price} USD`} />
               </ListItem>
             ))}
           </List>
-          <Link component={RouterLink} to="/cart" sx={{ ml: 2, mb: 3 }}>
+          {/* <Link component={RouterLink} to="/cart" sx={{ ml: 2, mb: 3 }}>
             Edit
-          </Link>
+          </Link> */}
         </Card>
         <Divider />
         <Card>

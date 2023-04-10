@@ -26,68 +26,49 @@ import { getError } from "../../utils/utils";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/system";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import PayPalPay from "../paypal-pay/PayPalScreen";
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true, error: "" };
-    case "FETCH_SUCCESS":
-      return { ...state, loading: false, order: action.payload, error: "" };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.payload };
-
-    case "PAY_REQUEST":
-      return { ...state, loadingPay: true };
-    case "PAY_SUCCESS":
-      return { ...state, loadingPay: false, successPay: true };
-    case "PAY_FAIL":
-      return { ...state, loadingPay: false };
-    case "PAY_RESET":
-      return { ...state, loadingPay: false, successPay: false };
-
-    default:
-      return state;
-  }
 }
 
-export default function OrderScreenStripe() {
-  const navigate = useNavigate();
-  const { state } = useContext(Store);
-  const { userInfo, cart } = state;
-  const { cartItems } = cart;
+export default function PayPalScreen() {
 
-  const params = useParams();
-  const { id: orderId } = params;
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      order: {},
-      error: "",
-      successPay: false,
-      loadingPay: false,
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: { value: order.totalPrice },
+          },
+        ],
+      })
+      .then((orderID) => {
+        return orderID;
+      });
+  }
+
+  function onApprove(data, actions) {
+    return actions.order.capture().then(async function (details) {
+      try {
+        dispatch({ type: "PAY_REQUEST" });
+        const { data } = await axios.put(
+          `/api/orders/${order._id}/pay`,
+          details,
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        dispatch({ type: "PAY_SUCCESS", payload: data });
+        toast.success("Order is paid");
+      } catch (err) {
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
+        toast.error(getError(err));
+      }
     });
-
-  const onApprove = async () => {
-    console.log("token", userInfo.token);
-    try {
-      dispatch({ type: "PAY_REQUEST" });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/pay`,
-        { orderId: orderId },
-        // details,
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      dispatch({ type: "PAY_SUCCESS", payload: data });
-      toast.success("Order is paid");
-    } catch (err) {
-      dispatch({ type: "PAY_FAIL", payload: getError(err) });
-      toast.error(getError(err));
-    }
-  };
+  }
+  function onError(err) {
+    toast.error(getError(err));
+  }
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -101,45 +82,60 @@ export default function OrderScreenStripe() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
+
     if (!userInfo) {
       return navigate("/login");
     }
-
     if (!order._id || successPay || (order._id && order._id !== orderId)) {
       fetchOrder();
-      // if (successPay) {
-      //   dispatch({ type: "PAY_RESET" });
-      // }
+      if (successPay) {
+        dispatch({ type: "PAY_RESET" });
+      }
+    } else {
+      const loadPaypalScript = async () => {
+        const { data: clientId } = await axios.get("/api/keys/paypal", {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+      loadPaypalScript();
     }
-  }, [order, userInfo, navigate, orderId, successPay]);
+  }, [order, userInfo, navigate, orderId, paypalDispatch, successPay]);
 
   //stripe
   const handleCheckout = async () => {
     console.log(order.orderItems);
-
     try {
       const { data } = await axios.post(
-        `/api/create-checkout-session`,
-        {
-          orderItems: order.orderItems,
-          userId: userInfo._id,
-          orderID: order._id,
-        },
+        `http://localhost:5000/api/create-checkout-session`,
+        { cartItems: order.orderItems, userId: userInfo._id },
         {
           headers: {
-            Authorization: `Bearer ${userInfo.token}`,
+            authorization: `Bearer ${userInfo.token}`,
           },
         }
       );
+      // if (data.url)
       console.log("data", data);
 
-      if (data.url) {
-        window.location = data.url;
-        onApprove();
-      }
-    } catch (err) {
-      dispatch({ type: "PAY_FAIL", payload: getError(err) });
-      // toast.error(getError(err));
+      // if (data.url)
+
+      // {
+      //   navigate(data.url);
+      //   // console.log(data.session);
+
+      //   toast.success("Order is paid");
+      // }
+    } catch (error) {
+      console.log("error:", error);
+      toast.error(getError(error));
     }
   };
 
@@ -148,7 +144,7 @@ export default function OrderScreenStripe() {
   ) : error ? (
     <div>{error}</div>
   ) : (
-    <Container maxWidth="sm" sx={{ mt: 5, mb: 10 }}>
+    <Container maxWidth="sm" sx={{ mt: 5 }}>
       <Helmet>
         <title>Order no: {orderId} - KebaBomb</title>
       </Helmet>
@@ -268,12 +264,18 @@ export default function OrderScreenStripe() {
           <CardActions>
             {!order.isPaid && (
               <Card>
-                <Button
-                  onClick={() => handleCheckout()}
-                  orderItems={order.orderItems}
-                >
-                  stripe
-                </Button>
+                {isPending ? (
+                  <CircularProgress />
+                ) : (
+                  <div>
+                    <PayPalButtons
+                      createOrder={createOrder}
+                      onApprove={onApprove}
+                      onError={onError}
+                    ></PayPalButtons>
+                  </div>
+                )}
+                {loadingPay && <CircularProgress></CircularProgress>}
               </Card>
             )}
           </CardActions>

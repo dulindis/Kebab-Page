@@ -6,7 +6,8 @@ import { Store } from "../../Store";
 import CheckoutSteps from "../../components/checkout-steps/CheckoutSteps";
 import ShippingAddress from "../shipping-address-screen/ShippingAddress";
 import PaymentForm from "../payment-method-screen/PaymentDetails";
-import PlaceOrder from "../place-order-screen/PlaceOrder";
+// import PlaceOrder from "../place-order-screen/PlaceOrder";
+import PlaceOrderScreen from "../place-order-screen/PlaceOrderScreen";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -58,7 +59,7 @@ export default function CheckoutScreen() {
           />
         );
       case 2:
-        return <PlaceOrder steps={steps} handleBack={handleBack} />;
+        return <PlaceOrderScreen steps={steps} handleBack={handleBack} />;
 
       default:
         throw new Error("Unknown step");
@@ -75,7 +76,6 @@ export default function CheckoutScreen() {
 
   return (
     <React.Fragment>
-      {/* <ThemeProvider theme={theme}> */}
       <CssBaseline />
       <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
         <Paper
@@ -100,38 +100,11 @@ export default function CheckoutScreen() {
                 </Typography>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                {/* 
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    {activeStep !== 0 && (
-                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                        Back
-                      </Button>
-                    )} */}
-
-                {/* {activeStep === 0 ? (
-                      ""
-                    ) : (
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        onClick={handleNext}
-                        sx={{ mt: 3, ml: 1 }}
-                      >
-                        {activeStep === steps.length - 1
-                          ? "Place order"
-                          : "Next2"}
-                      </Button>
-                    )} */}
-                {/* </Box> */}
-              </React.Fragment>
+              <React.Fragment>{getStepContent(activeStep)}</React.Fragment>
             )}
           </React.Fragment>
         </Paper>
-        {/* <Copyright /> */}
       </Container>
-      {/* </ThemeProvider> */})
     </React.Fragment>
   );
 }

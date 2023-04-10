@@ -24,7 +24,12 @@ import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
+
 import axios from "axios";
+// import {axiosInstance as axios} from "../../configAxios";
+
+
+
 import { toast } from "react-toastify";
 import { getError } from "../../utils/utils";
 import {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+// import {axiosInstance as axios} from "../../configAxios";
 
 import { Helmet } from "react-helmet-async";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";

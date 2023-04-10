@@ -18,7 +18,10 @@ import { toast } from "react-toastify";
 import React, { useContext, useEffect, useReducer } from "react";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { Store } from "../../Store";
+
 import axios from "axios";
+// import {axiosInstance as axios} from "../../configAxios";
+
 import { getError } from "../../utils/utils";
 import { Helmet } from "react-helmet-async";
 import { Box } from "@mui/system";
@@ -48,6 +51,7 @@ function reducer(state, action) {
 }
 
 export default function OrderScreen() {
+  
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo, cart } = state;
@@ -104,6 +108,10 @@ export default function OrderScreen() {
     toast.error(getError(err));
   }
 
+
+
+
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -143,9 +151,8 @@ export default function OrderScreen() {
     }
   }, [order, userInfo, navigate, orderId, paypalDispatch, successPay]);
 
-
   //stripe
-  const handleCheckout =  async () => {
+  const handleCheckout = async () => {
     console.log(order.orderItems);
     try {
       const { data } = await axios.post(
@@ -157,20 +164,18 @@ export default function OrderScreen() {
           },
         }
       );
-        // if (data.url) 
-        console.log('data',data);
+      // if (data.url)
 
-        // if (data.url) 
+      // if (data.url)
 
-        // {
-        //   navigate(data.url);
-        //   // console.log(data.session);
+      // {
+      //   navigate(data.url);
+      //   // console.log(data.session);
 
-        //   toast.success("Order is paid");
-        // }
-
-    }  catch (error) {
-      console.log('error:', error)
+      //   toast.success("Order is paid");
+      // }
+    } catch (error) {
+      console.log("error:", error);
       toast.error(getError(error));
     }
   };
@@ -314,11 +319,9 @@ export default function OrderScreen() {
                 {loadingPay && <CircularProgress></CircularProgress>}
               </Card>
             )}
-
           </CardActions>
         </Card>
       </Stack>
     </Container>
   );
 }
-
